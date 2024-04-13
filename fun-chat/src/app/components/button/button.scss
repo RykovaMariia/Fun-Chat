@@ -1,0 +1,30 @@
+@use '../../../styles/constants.scss';
+
+.button {
+  cursor: pointer;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 2rem;
+  width: 150px;
+  padding: 8px 30px;
+  border-radius: 10px;
+  border: 0;
+  background-color: constants.$color-button;
+  box-shadow: constants.$color-shadow;
+  transition: all 0.7s ease;
+
+  &:hover {
+    box-shadow: constants.$color-shadow-dark;
+  }
+
+  &:active {
+    box-shadow: constants.$color-shadow;
+    transform: scale(95%);
+  }
+
+  &:disabled {
+    box-shadow: constants.$color-shadow;
+    transform: scale(100%);
+    cursor: auto;
+  }
+}

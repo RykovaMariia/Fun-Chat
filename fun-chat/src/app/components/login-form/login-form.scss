@@ -1,0 +1,81 @@
+@use '../../../styles/constants.scss';
+
+.login-form {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 300px;
+  padding: 40px 20px;
+  border-radius: 10px;
+  box-shadow: constants.$color-shadow;
+  background-color: constants.$color-form;
+}
+
+.input {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.input__label {
+  cursor: pointer;
+  position: relative;
+  text-transform: capitalize;
+  top: 0;
+  padding: 5px 10px;
+  color: constants.$color-text-light;
+  transition: all 0.7s ease;
+}
+
+.input_empty + .input__label {
+  cursor: pointer;
+  position: relative;
+  top: 40px;
+  padding: 5px 10px;
+  color: constants.$color-text-light;
+  transition: all 0.7s ease;
+}
+
+.input__field {
+  cursor: pointer;
+  width: 250px;
+  height: 30px;
+  padding: 5px 10px;
+  border: 0;
+  background-color: constants.$color-opacity;
+  border-bottom: 2px solid constants.$color-text-light;
+  transition: all 0.7s ease;
+  font-family: inherit;
+  font-size: 2rem;
+  font-weight: 100;
+
+  &:focus,
+  &:valid {
+    outline: 0;
+    border-bottom-color: constants.$color-text-dark;
+
+    &:invalid {
+      border-bottom-color: constants.$color-text-invalid;
+    }
+
+    & + .input__label {
+      color: constants.$color-text-dark;
+    }
+  }
+}
+
+.input_empty:focus + .input__label {
+  color: constants.$color-text-dark;
+  transform: translateY(-40px);
+}
+
+.error {
+  width: 250px;
+  color: constants.$color-text-invalid;
+  font-size: 1.2rem;
+}
+
+.button_login {
+  margin-top: 20px;
+}

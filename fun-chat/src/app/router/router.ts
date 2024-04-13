@@ -1,6 +1,7 @@
 import { BaseComponent } from 'Components/base-component';
 import { AppRoute } from 'Enums/app-route';
 import { Route } from 'Interfaces/route';
+import { IRouter } from 'Interfaces/router';
 import { createRoutes } from 'Router/create-router';
 
 function parseUrl(url: string) {
@@ -10,12 +11,12 @@ function parseUrl(url: string) {
   return urlInfo;
 }
 
-export class Router {
+export class Router implements IRouter {
   private routerOutlet: HTMLElement | null = null;
 
   private previousPage: BaseComponent | null = null;
 
-  private routes: Route[] = createRoutes();
+  private routes: Route[] = createRoutes(this);
 
   private notFoundRoute = {
     path: AppRoute.NotFound,

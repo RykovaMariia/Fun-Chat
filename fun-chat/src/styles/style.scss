@@ -1,4 +1,18 @@
+@use './constants.scss';
+
 * {
   margin: 0;
   padding: 0;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-family: Montserrat, sans-serif;
+  font-size: 1.5rem;
+  color: constants.$color-text-dark;
+  background-color: constants.$color-background-body-light;
+  padding: 40px;
 }

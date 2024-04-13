@@ -5,6 +5,7 @@ export class MainPage extends BaseComponent {
     super({
       tagName: 'div',
       classNames: 'main-page',
+      textContent: 'main',
     });
   }
 }
