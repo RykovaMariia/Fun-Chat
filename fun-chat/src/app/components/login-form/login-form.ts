@@ -22,14 +22,20 @@ function getError(input: Input, fieldName: string, numberField: number) {
 }
 
 export class LoginForm extends BaseComponent<HTMLFormElement> {
-  constructor(props?: TaggedElementProps, onSubmit?: () => void) {
+  private inputs: Input[] = [];
+
+  // eslint-disable-next-line max-lines-per-function
+  constructor(
+    submitForm?: (e: Event, login: string, password: string) => void,
+    props?: TaggedElementProps,
+  ) {
     super({
       ...props,
       tagName: 'form',
       classNames: 'login-form',
     });
 
-    const inputs = INPUTS.map((inputName, i) => {
+    const inputContainers = INPUTS.map((inputName, i) => {
       const div = new BaseComponent({ tagName: 'div', classNames: 'input' });
       const label = new BaseComponent({
         tagName: 'label',
@@ -42,6 +48,8 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
         required: true,
         patternValue: REG_VALID[i],
       });
+
+      this.inputs.push(input);
 
       const spanError = new BaseComponent({
         tagName: 'span',
@@ -62,11 +70,18 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
         textContent: 'Login',
         classNames: 'button_login',
       },
-      { type: 'submit' },
+      {
+        type: 'submit',
+      },
     );
 
-    this.addEventListener('submit', () => onSubmit);
+    if (submitForm) {
+      submitButton.setOnClick((e) => {
+        const [login, password] = this.inputs.map((input) => input.getValue());
+        submitForm(e, login, password);
+      });
+    }
 
-    this.insertChildren([...inputs, submitButton]);
+    this.insertChildren([...inputContainers, submitButton]);
   }
 }

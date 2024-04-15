@@ -19,7 +19,6 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "noInlineConfig": true,
   "plugins": ["@typescript-eslint", "prettier", "import"],
   "rules": {
     "@typescript-eslint/return-await": 0,
