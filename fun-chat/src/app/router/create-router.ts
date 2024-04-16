@@ -5,7 +5,7 @@ import { sessionStorageService } from 'Services/storage-service';
 async function getPageByAuthenticatedStatus(router: IRouter) {
   if (sessionStorageService.getData('user') !== null) {
     const { MainPage } = await import('Pages/main-page/main-page');
-    return new MainPage();
+    return new MainPage(router);
   }
   const { LoginPage } = await import('Pages/login-page/login-page');
   return new LoginPage(router);

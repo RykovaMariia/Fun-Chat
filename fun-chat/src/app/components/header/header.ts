@@ -22,6 +22,6 @@ export class Header extends BaseComponent {
       { toNavigation: AppRoute.About, router },
     );
 
-    this.insertChildren([logo, about]);
+    this.appendChildren([logo, about]);
   }
 }

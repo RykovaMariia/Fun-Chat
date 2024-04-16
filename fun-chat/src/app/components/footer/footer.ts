@@ -27,6 +27,6 @@ export class Footer extends BaseComponent {
       textContent: '2024',
     });
 
-    this.insertChildren([logoSchool, nameGitHub, creationYear]);
+    this.appendChildren([logoSchool, nameGitHub, creationYear]);
   }
 }

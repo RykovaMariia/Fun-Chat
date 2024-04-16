@@ -24,7 +24,7 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
     this.setTextContent(props.textContent ?? '');
 
     if (props.parentNode) {
-      this.insertChild(props.parentNode);
+      this.appendChild(props.parentNode);
     }
     if (props.attribute) this.setAttribute(props.attribute);
   }
@@ -53,14 +53,20 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
     this.element.textContent = text;
   }
 
-  insertChild(child: HTMLElement | BaseComponent): void {
+  appendChild(child: HTMLElement | BaseComponent): void {
     if (child instanceof HTMLElement) {
       this.element.append(child);
     } else this.element.append(child.getElement());
   }
 
-  insertChildren(children: BaseComponent[]): void {
-    children.forEach((el) => this.insertChild(el.getElement()));
+  prependChild(child: HTMLElement | BaseComponent): void {
+    if (child instanceof HTMLElement) {
+      this.element.prepend(child);
+    } else this.element.prepend(child.getElement());
+  }
+
+  appendChildren(children: BaseComponent[]): void {
+    children.forEach((el) => this.appendChild(el.getElement()));
   }
 
   setAttribute(attribute: AttributeElement) {

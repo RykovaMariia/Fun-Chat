@@ -60,7 +60,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
         spanError.setTextContent(getError(input, inputName, i));
       });
 
-      div.insertChildren([spanError, input, label]);
+      div.appendChildren([spanError, input, label]);
       return div;
     });
 
@@ -89,6 +89,6 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
       });
     }
 
-    this.insertChildren([...inputContainers, submitButton]);
+    this.appendChildren([...inputContainers, submitButton]);
   }
 }

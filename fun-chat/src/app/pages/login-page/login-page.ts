@@ -17,7 +17,7 @@ export class LoginPage extends BaseComponent {
       classNames: 'login-page',
     });
 
-    const header = new Header(router);
+    const header = new Header(this.router);
     const heading = new BaseComponent({
       tagName: 'h2',
       classNames: 'login__heading',
@@ -27,7 +27,7 @@ export class LoginPage extends BaseComponent {
     const loginForm = new LoginForm(this.loginForm);
     const footer = new Footer();
 
-    this.insertChildren([header, heading, loginForm, footer]);
+    this.appendChildren([header, heading, loginForm, footer]);
   }
 
   loginForm(login: string, password: string) {
