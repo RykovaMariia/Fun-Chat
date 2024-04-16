@@ -24,11 +24,10 @@ function getError(input: Input, fieldName: string, numberField: number) {
 export class LoginForm extends BaseComponent<HTMLFormElement> {
   private inputs: Input[] = [];
 
+  private spanElements: BaseComponent[] = [];
+
   // eslint-disable-next-line max-lines-per-function
-  constructor(
-    submitForm?: (e: Event, login: string, password: string) => void,
-    props?: TaggedElementProps,
-  ) {
+  constructor(submitForm?: (login: string, password: string) => void, props?: TaggedElementProps) {
     super({
       ...props,
       tagName: 'form',
@@ -55,6 +54,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
         tagName: 'span',
         classNames: 'error',
       });
+      this.spanElements.push(spanError);
 
       input.addOnInput(() => {
         spanError.setTextContent(getError(input, inputName, i));
@@ -77,8 +77,15 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
 
     if (submitForm) {
       submitButton.setOnClick((e) => {
-        const [login, password] = this.inputs.map((input) => input.getValue());
-        submitForm(e, login, password);
+        e.preventDefault();
+        if (this.inputs.every((input) => input.isValid())) {
+          const [login, password] = this.inputs.map((input) => input.getValue());
+          submitForm(login, password);
+        } else {
+          this.inputs.forEach((input, i) => {
+            this.spanElements[i].setTextContent(getError(input, INPUTS[i], i));
+          });
+        }
       });
     }
 

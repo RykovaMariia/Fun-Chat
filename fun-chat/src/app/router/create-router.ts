@@ -1,9 +1,9 @@
 import { AppRoute } from 'Enums/app-route';
 import { IRouter } from 'Interfaces/router';
-import { pageService } from 'Services/page-service';
+import { sessionStorageService } from 'Services/storage-service';
 
 async function getPageByAuthenticatedStatus(router: IRouter) {
-  if (pageService.getAuthenticatedStatus()) {
+  if (sessionStorageService.getData('user') !== null) {
     const { MainPage } = await import('Pages/main-page/main-page');
     return new MainPage();
   }

@@ -1,13 +1,7 @@
 import { UserLoginResponse } from 'Interfaces/ws-message';
 import { ResponseType } from 'Enums/response-type';
-import { socketService } from './socket-service';
-import { Observable } from './observables/observable';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface Login {
-  login: string;
-  password: string;
-}
+import { socketService } from '../socket-service';
+import { Observable } from '../observable';
 
 export class LoginService {
   private user = new Observable<string>('');
@@ -20,9 +14,12 @@ export class LoginService {
     this.user.notify(response.payload.user.login);
   };
 
-  subscribeLogin() {
-    // eslint-disable-next-line no-console
-    this.user.subscribe((log) => console.log(log));
+  subscribeLogin(callback: (log: string) => void) {
+    this.user.subscribe(callback, true);
+  }
+
+  getLogin() {
+    return this.user.getValue();
   }
 }
 

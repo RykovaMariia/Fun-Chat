@@ -11,8 +11,9 @@ export class Observable<ListenerType> {
     this.listeners = [];
   }
 
-  subscribe(listener: (params: ListenerType) => void): void {
+  subscribe(listener: (params: ListenerType) => void, isNotify?: boolean): void {
     this.listeners.push(listener);
+    if (isNotify) listener(this.value);
   }
 
   unsubscribe(listener: (params: ListenerType) => void): void {
