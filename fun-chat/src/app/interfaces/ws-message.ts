@@ -1,7 +1,7 @@
 import { ResponseType } from 'Enums/response-type';
 
 export interface BaseResponse<TResponseType extends ResponseType, TPayload> {
-  id: '';
+  id: string | null;
   type: TResponseType;
   payload: TPayload;
 }
@@ -11,6 +11,13 @@ export interface UserPayloadResponse {
     login: string;
     isLogined: boolean;
   };
+}
+
+export interface UsersPayloadResponse {
+  users: {
+    login: string;
+    isLogined: boolean;
+  }[];
 }
 
 export interface UserPayloadRequest {
@@ -43,9 +50,11 @@ export interface UserLoginResponse extends BaseResponse<ResponseType.login, User
 export interface UserLogoutResponse
   extends BaseResponse<ResponseType.logout, UserPayloadResponse> {}
 export interface UsersActiveResponse
-  extends BaseResponse<ResponseType.userActive, UserPayloadResponse> {}
+  extends BaseResponse<ResponseType.userActive, UsersPayloadResponse> {}
 export interface UsersInactiveResponse
-  extends BaseResponse<ResponseType.userInactive, UserPayloadResponse[]> {}
+  extends BaseResponse<ResponseType.userInactive, UsersPayloadResponse> {}
+export interface UsersExternalResponse
+  extends BaseResponse<ResponseType.userExternalLogin, UserPayloadResponse> {}
 export interface SendingMessageResponse
   extends BaseResponse<ResponseType.msgSend, MessagePayloadResponse> {}
 export interface MessageHistoryResponse
@@ -57,5 +66,3 @@ export interface MessageDeletionResponse
 export interface MessageTextEditingResponse
   extends BaseResponse<ResponseType.msgEdit, MessagePayloadResponse> {}
 export interface ErrorResponse extends BaseResponse<ResponseType.error, ErrorPayload> {}
-
-export interface UserLoginRequest extends BaseResponse<ResponseType.login, UserPayloadResponse> {}

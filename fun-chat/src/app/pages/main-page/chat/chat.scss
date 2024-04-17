@@ -1,0 +1,7 @@
+@use '../../../../styles/constants.scss';
+
+.chat {
+  height: 700px;
+  width: 100%;
+  border: 2px solid constants.$color-form;
+}

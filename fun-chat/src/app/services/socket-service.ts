@@ -34,7 +34,11 @@ export class SocketService extends EventEmitter {
   }
 
   sendMessage(message: object) {
-    this.socket.send(JSON.stringify(message));
+    if (this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify(message));
+    } else {
+      setTimeout(() => this.sendMessage(message), 1000);
+    }
   }
 }
 

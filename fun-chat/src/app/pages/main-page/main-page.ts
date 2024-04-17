@@ -4,6 +4,7 @@ import { Header } from 'Components/header/header';
 import { IRouter } from 'Interfaces/router';
 import { loginService } from 'Services/chat-services/login-service';
 import { LogoutButton } from './logout-button/logout-button';
+import { Chat } from './chat/chat';
 
 export class MainPage extends BaseComponent {
   constructor(private router: IRouter) {
@@ -14,13 +15,16 @@ export class MainPage extends BaseComponent {
 
     const header = new Header(this.router);
     const userName = new BaseComponent({ tagName: 'div', classNames: 'user-name' });
+
     loginService.subscribeLogin((log) => userName.setTextContent(log));
     header.prependChild(userName);
 
     const logoutButton = new LogoutButton(this.router);
     header.appendChild(logoutButton);
 
+    const chat = new Chat();
+
     const footer = new Footer();
-    this.appendChildren([header, footer]);
+    this.appendChildren([header, chat, footer]);
   }
 }

@@ -28,7 +28,7 @@ export class LogoutButton extends Button {
 
         loginService.subscribeLogout(() => {
           sessionStorageService.removeData('user');
-          router.navigate(AppRoute.Login);
+          this.router.navigate(AppRoute.Login);
         });
       }
     });
