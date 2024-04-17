@@ -5,10 +5,13 @@ import { sessionStorageService } from './storage-service';
 export class SocketService extends EventEmitter {
   private socket = new WebSocket('ws://localhost:4000');
 
+  private messageQueue: object[] = [];
+
   constructor() {
     super();
 
     this.socket.onopen = (): void => {
+      this.flushMessageQueue();
       const user = sessionStorageService.getData('user');
       if (user !== null) {
         const { login, password } = user;
@@ -37,7 +40,14 @@ export class SocketService extends EventEmitter {
     if (this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify(message));
     } else {
-      setTimeout(() => this.sendMessage(message), 1000);
+      this.messageQueue.push(message);
+    }
+  }
+
+  flushMessageQueue() {
+    while (this.messageQueue.length > 0 && this.socket.readyState === WebSocket.OPEN) {
+      const message = this.messageQueue.shift();
+      this.socket.send(JSON.stringify(message));
     }
   }
 }

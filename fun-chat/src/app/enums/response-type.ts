@@ -4,6 +4,7 @@ export const enum ResponseType {
   userActive = 'USER_ACTIVE',
   userInactive = 'USER_INACTIVE',
   userExternalLogin = 'USER_EXTERNAL_LOGIN',
+  userExternalLogout = 'USER_EXTERNAL_LOGOUT',
   msgSend = 'MSG_SEND',
   msgFromUser = 'MSG_FROM_USER',
   msgRead = 'MSG_READ',

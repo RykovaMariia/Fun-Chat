@@ -53,8 +53,10 @@ export interface UsersActiveResponse
   extends BaseResponse<ResponseType.userActive, UsersPayloadResponse> {}
 export interface UsersInactiveResponse
   extends BaseResponse<ResponseType.userInactive, UsersPayloadResponse> {}
-export interface UsersExternalResponse
+export interface UserExternalLoginResponse
   extends BaseResponse<ResponseType.userExternalLogin, UserPayloadResponse> {}
+export interface UserExternalLogoutResponse
+  extends BaseResponse<ResponseType.userExternalLogout, UserPayloadResponse> {}
 export interface SendingMessageResponse
   extends BaseResponse<ResponseType.msgSend, MessagePayloadResponse> {}
 export interface MessageHistoryResponse
