@@ -1,10 +1,10 @@
-import { ResponseType } from 'Enums/response-type';
+import { TypeName } from 'Enums/type.name';
 import {
   UsersActiveResponse,
   UserExternalLoginResponse,
   UsersInactiveResponse,
   UserExternalLogoutResponse,
-} from 'Interfaces/ws-message';
+} from 'Interfaces/ws-response';
 import { Observable } from 'Services/observable';
 import { socketService } from 'Services/socket-service';
 import { loginService } from './login-service';
@@ -15,20 +15,20 @@ class UserListService {
   private inactiveUsers = new Observable<string[]>([]);
 
   constructor() {
-    socketService.subscribe(ResponseType.userActive, this.onUserActive);
-    socketService.subscribe(ResponseType.userExternalLogin, this.onUserExternalLogin);
-    socketService.subscribe(ResponseType.userInactive, this.onUserInactive);
-    socketService.subscribe(ResponseType.userExternalLogout, this.onUserExternalLogout);
+    socketService.subscribe(TypeName.userActive, this.onUserActive);
+    socketService.subscribe(TypeName.userExternalLogin, this.onUserExternalLogin);
+    socketService.subscribe(TypeName.userInactive, this.onUserInactive);
+    socketService.subscribe(TypeName.userExternalLogout, this.onUserExternalLogout);
 
     socketService.sendMessage({
       id: '',
-      type: ResponseType.userActive,
+      type: TypeName.userActive,
       payload: null,
     });
 
     socketService.sendMessage({
       id: '',
-      type: ResponseType.userInactive,
+      type: TypeName.userInactive,
       payload: null,
     });
   }

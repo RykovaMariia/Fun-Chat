@@ -11,7 +11,9 @@ export class Main extends BaseComponent {
     });
 
     let chat = new Chat();
+
     const userList = new UserList((str, isActive) => {
+      chat.unsubscribeHistoryMessage();
       chat.destroy();
       chat = new Chat(str, isActive);
       this.appendChild(chat);

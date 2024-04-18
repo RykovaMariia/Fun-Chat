@@ -1,4 +1,5 @@
-import { ResponseType } from 'Enums/response-type';
+import { TypeName } from 'Enums/type.name';
+import { WSRequest } from 'Interfaces/ws-request';
 import { EventEmitter, ListenerResponse } from './event-emitter';
 import { sessionStorageService } from './storage-service';
 
@@ -17,7 +18,7 @@ export class SocketService extends EventEmitter {
         const { login, password } = user;
         this.sendMessage({
           id: '',
-          type: ResponseType.login,
+          type: TypeName.login,
           payload: {
             user: {
               login,
@@ -28,7 +29,7 @@ export class SocketService extends EventEmitter {
       }
     };
     this.socket.onmessage = (event: MessageEvent<string>): void => {
-      const data = JSON.parse(event.data) as ListenerResponse<ResponseType>;
+      const data = JSON.parse(event.data) as ListenerResponse<TypeName>;
       this.dispatch(data.type, data);
     };
     this.socket.onerror = (event: Event): void => {
@@ -36,7 +37,7 @@ export class SocketService extends EventEmitter {
     };
   }
 
-  sendMessage(message: object) {
+  sendMessage(message: WSRequest) {
     if (this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify(message));
     } else {

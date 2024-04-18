@@ -4,7 +4,7 @@ import { Footer } from 'Components/footer/footer';
 import { Header } from 'Components/header/header';
 import { LoginForm } from 'Components/login-form/login-form';
 import { AppRoute } from 'Enums/app-route';
-import { ResponseType } from 'Enums/response-type';
+import { TypeName } from 'Enums/type.name';
 import { IRouter } from 'Interfaces/router';
 import { loginService } from 'Services/chat-services/login-service';
 import { socketService } from 'Services/socket-service';
@@ -33,7 +33,7 @@ export class LoginPage extends BaseComponent {
   loginForm(login: string, password: string) {
     socketService.sendMessage({
       id: '',
-      type: ResponseType.login,
+      type: TypeName.login,
       payload: {
         user: {
           login,

@@ -1,21 +1,25 @@
-import { Message, MessageHistoryResponse } from 'Interfaces/ws-message';
-import { ResponseType } from 'Enums/response-type';
+import { MessageHistoryResponse, MessageResponse } from 'Interfaces/ws-response';
+import { TypeName } from 'Enums/type.name';
 import { socketService } from '../socket-service';
 import { Observable } from '../observable';
 
 export class MessageService {
-  private messageHistory = new Observable<Message[]>([]);
+  private messageHistory = new Observable<MessageResponse[]>([]);
 
   constructor() {
-    socketService.subscribe(ResponseType.msgFromUser, this.onMsgFromUser);
+    socketService.subscribe(TypeName.msgFromUser, this.onMsgFromUser);
   }
 
   private onMsgFromUser = (response: MessageHistoryResponse) => {
-    if (response.payload.messages) this.messageHistory.notify(response.payload.messages);
+    if (response.payload.messages) this.messageHistory.notify(() => response.payload.messages);
   };
 
-  subscribeHistoryMessage(callback: (messages: Message[]) => void) {
-    this.messageHistory.subscribe(callback, true);
+  subscribeHistoryMessage(callback: (messages: MessageResponse[]) => void) {
+    this.messageHistory.subscribe(callback);
+  }
+
+  unsubscribeHistoryMessage(callback: (messages: MessageResponse[]) => void) {
+    this.messageHistory.unsubscribe(callback);
   }
 }
 

@@ -1,5 +1,5 @@
-import { UserLoginResponse, UserLogoutResponse } from 'Interfaces/ws-message';
-import { ResponseType } from 'Enums/response-type';
+import { UserLoginResponse, UserLogoutResponse } from 'Interfaces/ws-response';
+import { TypeName } from 'Enums/type.name';
 import { socketService } from '../socket-service';
 import { Observable } from '../observable';
 
@@ -7,8 +7,8 @@ export class LoginService {
   private user = new Observable<string>('');
 
   constructor() {
-    socketService.subscribe(ResponseType.login, this.onUserLogin);
-    socketService.subscribe(ResponseType.logout, this.onUserLogout);
+    socketService.subscribe(TypeName.login, this.onUserLogin);
+    socketService.subscribe(TypeName.logout, this.onUserLogout);
   }
 
   private onUserLogin = (response: UserLoginResponse) => {

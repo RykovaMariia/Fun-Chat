@@ -1,11 +1,12 @@
-import { Input } from 'Components/input/input';
 import './chat.scss';
 import { BaseComponent } from 'Components/base-component';
-import { Button } from 'Components/button/button';
 import { ChatHeader } from './chat-header';
 import { MessageField } from './message-field';
+import { SendMessageField } from './send-message-field';
 
 export class Chat extends BaseComponent {
+  private messageField: MessageField;
+
   constructor(user?: string, isActive?: boolean) {
     super({
       tagName: 'section',
@@ -14,18 +15,14 @@ export class Chat extends BaseComponent {
 
     const chatHeader = new ChatHeader(user, isActive);
 
-    const messageField = new MessageField(user);
+    this.messageField = new MessageField(user);
 
-    const sendMessageField = new BaseComponent({
-      tagName: 'div',
-      classNames: 'chat__send-message',
-    });
+    const sendMessageField = new SendMessageField(user);
 
-    const inputText = new Input({ type: 'text', placeholder: 'message...', required: true });
-    const sendMessageButton = new Button({ classNames: 'button_send-message' });
+    this.appendChildren([chatHeader, this.messageField, sendMessageField]);
+  }
 
-    sendMessageField.appendChildren([inputText, sendMessageButton]);
-
-    this.appendChildren([chatHeader, messageField, sendMessageField]);
+  unsubscribeHistoryMessage() {
+    this.messageField.unsubscribeHistoryMessage();
   }
 }

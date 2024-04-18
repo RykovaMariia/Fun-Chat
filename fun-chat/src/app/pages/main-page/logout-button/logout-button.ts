@@ -1,5 +1,6 @@
 import { Button } from 'Components/button/button';
 import { AppRoute } from 'Enums/app-route';
+import { TypeName } from 'Enums/type.name';
 import { IRouter } from 'Interfaces/router';
 import { loginService } from 'Services/chat-services/login-service';
 import { socketService } from 'Services/socket-service';
@@ -17,7 +18,7 @@ export class LogoutButton extends Button {
       if (user !== null) {
         socketService.sendMessage({
           id: '',
-          type: 'USER_LOGOUT',
+          type: TypeName.logout,
           payload: {
             user: {
               login: user.login,

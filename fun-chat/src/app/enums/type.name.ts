@@ -1,4 +1,4 @@
-export const enum ResponseType {
+export const enum TypeName {
   login = 'USER_LOGIN',
   logout = 'USER_LOGOUT',
   userActive = 'USER_ACTIVE',

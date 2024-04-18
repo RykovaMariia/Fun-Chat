@@ -1,11 +1,13 @@
 import { BaseComponent } from 'Components/base-component';
+import { TypeName } from 'Enums/type.name';
+import { MessageResponse } from 'Interfaces/ws-response';
 import { messageService } from 'Services/chat-services/message-service';
 import { socketService } from 'Services/socket-service';
 
 function requestMessageHistory(login: string) {
   socketService.sendMessage({
     id: '',
-    type: 'MSG_FROM_USER',
+    type: TypeName.msgFromUser,
     payload: {
       user: {
         login,
@@ -15,6 +17,8 @@ function requestMessageHistory(login: string) {
 }
 
 export class MessageField extends BaseComponent {
+  private messageElements: BaseComponent<HTMLElement>[] = [];
+
   constructor(user?: string) {
     super({
       tagName: 'div',
@@ -26,15 +30,24 @@ export class MessageField extends BaseComponent {
     } else {
       requestMessageHistory(user);
 
-      messageService.subscribeHistoryMessage((messages) => {
-        if (messages.length === 0) this.setTextContent('Write your first message...');
-        else {
-          const message = messages.map(
-            (msg) => new BaseComponent({ tagName: 'div', textContent: msg.text }),
-          );
-          this.appendChildren(message);
-        }
-      });
+      messageService.subscribeHistoryMessage(this.createMessage);
     }
+  }
+
+  createMessage = (messages: MessageResponse[]) => {
+    this.messageElements.forEach((el) => el.destroy());
+
+    if (messages.length === 0) {
+      this.setTextContent('Write your first message...');
+    } else {
+      this.messageElements = messages.map(
+        (msg) => new BaseComponent({ tagName: 'div', textContent: msg.text }),
+      );
+      this.appendChildren(this.messageElements);
+    }
+  };
+
+  unsubscribeHistoryMessage() {
+    messageService.unsubscribeHistoryMessage(this.createMessage);
   }
 }
