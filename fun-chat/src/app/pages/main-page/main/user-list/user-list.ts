@@ -1,3 +1,4 @@
+import './user-list.scss';
 import { BaseComponent } from 'Components/base-component';
 import { Input } from 'Components/input/input';
 import { userListService } from 'Services/chat-services/user-list-service';
@@ -11,7 +12,8 @@ export class UserList extends BaseComponent {
 
   private userInactiveList = new BaseComponent({ tagName: 'ul' });
 
-  constructor() {
+  // eslint-disable-next-line max-lines-per-function
+  constructor(onClickUser: (user: string, isActive: boolean) => void) {
     super({
       tagName: 'section',
       classNames: 'user-list',
@@ -30,6 +32,13 @@ export class UserList extends BaseComponent {
         (userName) =>
           new BaseComponent({ tagName: 'li', classNames: 'activeUser', textContent: userName }),
       );
+
+      this.activeUsers.forEach((user) =>
+        user.addEventListener('click', () => {
+          onClickUser(user.getTextContent() || '', true);
+        }),
+      );
+
       this.userActiveList.appendChildren(this.activeUsers);
     });
 
@@ -40,6 +49,12 @@ export class UserList extends BaseComponent {
         (userName) =>
           new BaseComponent({ tagName: 'li', classNames: 'inactiveUser', textContent: userName }),
       );
+      this.inactiveUsers.forEach((user) =>
+        user.addEventListener('click', () => {
+          onClickUser(user.getTextContent() || '', false);
+        }),
+      );
+
       this.userInactiveList.appendChildren(this.inactiveUsers);
     });
 

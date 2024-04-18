@@ -1,0 +1,18 @@
+@use '../../../../../styles/constants.scss';
+
+.chat {
+  width: 80%;
+  padding: 20px;
+  border: 2px solid constants.$color-form;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chat__header {
+  border-bottom: 2px solid constants.$color-form;
+}
+
+.chat__messages {
+  height: 80%;
+}

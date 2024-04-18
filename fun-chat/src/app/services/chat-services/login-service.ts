@@ -11,11 +11,11 @@ export class LoginService {
     socketService.subscribe(ResponseType.logout, this.onUserLogout);
   }
 
-  onUserLogin = (response: UserLoginResponse) => {
+  private onUserLogin = (response: UserLoginResponse) => {
     if (response.payload.user.isLogined) this.user.notify(response.payload.user.login);
   };
 
-  onUserLogout = (response: UserLogoutResponse) => {
+  private onUserLogout = (response: UserLogoutResponse) => {
     if (!response.payload.user.isLogined || response.payload.user.login === this.user.getValue())
       this.user.notify('');
   };
@@ -26,10 +26,6 @@ export class LoginService {
 
   subscribeLogout(callback: () => void) {
     this.user.subscribe(callback, true);
-  }
-
-  getLogin() {
-    return this.user.getValue();
   }
 }
 

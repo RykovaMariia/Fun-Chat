@@ -27,19 +27,25 @@ export interface UserPayloadRequest {
   };
 }
 
-export interface MessagePayloadResponse {
-  message: {
-    id: string;
-    from?: string;
-    to?: string;
-    text?: string;
-    datetime?: number;
-    status?: {
-      isDelivered?: boolean;
-      isReaded?: boolean;
-      isEdited?: boolean;
-    };
+export interface Message {
+  id: string;
+  from?: string;
+  to?: string;
+  text?: string;
+  datetime?: number;
+  status?: {
+    isDelivered?: boolean;
+    isReaded?: boolean;
+    isEdited?: boolean;
   };
+}
+
+export interface MessagePayloadResponse {
+  message: Message;
+}
+
+export interface MessageHistoryPayloadResponse {
+  messages: Message[];
 }
 
 export interface ErrorPayload {
@@ -60,7 +66,7 @@ export interface UserExternalLogoutResponse
 export interface SendingMessageResponse
   extends BaseResponse<ResponseType.msgSend, MessagePayloadResponse> {}
 export interface MessageHistoryResponse
-  extends BaseResponse<ResponseType.msgFromUser, MessagePayloadResponse[]> {}
+  extends BaseResponse<ResponseType.msgFromUser, MessageHistoryPayloadResponse> {}
 export interface MessageReadStatusResponse
   extends BaseResponse<ResponseType.msgRead, MessagePayloadResponse> {}
 export interface MessageDeletionResponse
