@@ -1,15 +1,18 @@
 .login-page {
-  width: 100%;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   form {
-    margin-bottom: 150px;
+    margin-bottom: 80px;
   }
 }
 
 .login__heading {
-  margin: 40px auto;
+  margin: 20px auto 30px;
+  font-weight: 400;
 }

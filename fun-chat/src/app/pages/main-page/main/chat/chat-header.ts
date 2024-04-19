@@ -11,8 +11,10 @@ export class ChatHeader extends BaseComponent {
 
     const userStatus = new BaseComponent({ tagName: 'div' });
 
-    if (user) userStatus.setTextContent(isActive ? 'active' : 'inactive');
-
+    if (user) {
+      userStatus.setClassName(isActive ? ['user-status_active', 'user-status'] : 'user-status');
+      userStatus.setTextContent(isActive ? 'active' : 'inactive');
+    }
     this.appendChildren([userName, userStatus]);
   }
 }

@@ -1,11 +1,25 @@
 .header {
   width: 100%;
+  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   user-select: none;
 }
 
-.header__logo {
+.logo {
+  display: flex;
+  gap: 10px;
+}
+
+.logo__heading {
   font-size: 2rem;
+  font-weight: 400;
+}
+
+.logo__icon {
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 }

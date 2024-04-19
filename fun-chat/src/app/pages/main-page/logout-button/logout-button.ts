@@ -1,4 +1,6 @@
+import './logout-button.scss';
 import { Button } from 'Components/button/button';
+import { SvgContainer } from 'Components/svg-container/svg-container';
 import { AppRoute } from 'Enums/app-route';
 import { TypeName } from 'Enums/type.name';
 import { IRouter } from 'Interfaces/router';
@@ -10,8 +12,9 @@ export class LogoutButton extends Button {
   constructor(private router: IRouter) {
     super({
       classNames: 'button_logout',
-      textContent: 'logout',
     });
+
+    const logoutSvg = new SvgContainer('logout', { classNames: 'logout-svg' });
 
     this.setOnClick(() => {
       const user = sessionStorageService.getData('user');
@@ -33,5 +36,7 @@ export class LogoutButton extends Button {
         });
       }
     });
+
+    this.appendChild(logoutSvg);
   }
 }

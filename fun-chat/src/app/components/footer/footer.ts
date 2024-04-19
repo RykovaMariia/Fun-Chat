@@ -1,5 +1,6 @@
 import './footer.scss';
 import { BaseComponent } from 'Components/base-component';
+import { SvgContainer } from 'Components/svg-container/svg-container';
 
 export class Footer extends BaseComponent {
   constructor() {
@@ -8,11 +9,7 @@ export class Footer extends BaseComponent {
       classNames: 'footer',
     });
 
-    const logoSchool = new BaseComponent({
-      tagName: 'div',
-      classNames: 'logoSchool',
-      textContent: 'RSSchool',
-    });
+    const logoRSSchool = new SvgContainer('logo-rsschool', { classNames: 'logo-rsschool' });
 
     const nameGitHub = new BaseComponent({
       tagName: 'a',
@@ -27,6 +24,6 @@ export class Footer extends BaseComponent {
       textContent: '2024',
     });
 
-    this.appendChildren([logoSchool, nameGitHub, creationYear]);
+    this.appendChildren([logoRSSchool, nameGitHub, creationYear]);
   }
 }

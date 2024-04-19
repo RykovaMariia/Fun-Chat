@@ -2,7 +2,7 @@ import './chat.scss';
 import { BaseComponent } from 'Components/base-component';
 import { ChatHeader } from './chat-header';
 import { MessageField } from './message-field';
-import { SendMessageField } from './send-message-field';
+import { SendMessageForm } from './send-message-field';
 
 export class Chat extends BaseComponent {
   private messageField: MessageField;
@@ -17,9 +17,12 @@ export class Chat extends BaseComponent {
 
     this.messageField = new MessageField(user);
 
-    const sendMessageField = new SendMessageField(user);
+    this.appendChildren([chatHeader, this.messageField]);
 
-    this.appendChildren([chatHeader, this.messageField, sendMessageField]);
+    if (user) {
+      const sendMessageForm = new SendMessageForm(user);
+      this.appendChild(sendMessageForm);
+    }
   }
 
   unsubscribeHistoryMessage() {

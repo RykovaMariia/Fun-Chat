@@ -2,6 +2,7 @@ import './login-page.scss';
 import { BaseComponent } from 'Components/base-component';
 import { Footer } from 'Components/footer/footer';
 import { Header } from 'Components/header/header';
+import { Link } from 'Components/link/link';
 import { LoginForm } from 'Components/login-form/login-form';
 import { AppRoute } from 'Enums/app-route';
 import { TypeName } from 'Enums/type.name';
@@ -17,14 +18,22 @@ export class LoginPage extends BaseComponent {
       classNames: 'login-page',
     });
 
-    const header = new Header(this.router);
+    const header = new Header();
     const heading = new BaseComponent({
       tagName: 'h2',
       classNames: 'login__heading',
       textContent: 'LOGIN',
     });
+
+    const aboutFunChat = new Link(
+      { tagName: 'div', classNames: 'about-chat', textContent: 'about Fun Chat' },
+      { toNavigation: AppRoute.About, router },
+    );
+
     this.loginForm = this.loginForm.bind(this);
     const loginForm = new LoginForm(this.loginForm);
+    loginForm.appendChild(aboutFunChat);
+
     const footer = new Footer();
 
     this.appendChildren([header, heading, loginForm, footer]);

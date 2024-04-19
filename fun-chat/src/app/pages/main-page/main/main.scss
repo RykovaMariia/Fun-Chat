@@ -3,7 +3,10 @@
 .main {
   height: 500px;
   width: 100%;
-  border: 2px solid constants.$color-form;
+  border-radius: 20px;
+  padding: 20px;
   display: flex;
+  background-color: constants.$color-opacity10;
   box-sizing: border-box;
+  margin-bottom: 20px;
 }

@@ -1,27 +1,26 @@
 import './header.scss';
 import { BaseComponent } from 'Components/base-component';
-import { Link } from 'Components/link/link';
-import { AppRoute } from 'Enums/app-route';
-import { IRouter } from 'Interfaces/router';
+import { SvgContainer } from 'Components/svg-container/svg-container';
 
 export class Header extends BaseComponent {
-  constructor(router: IRouter) {
+  constructor() {
     super({
       tagName: 'header',
       classNames: 'header',
     });
 
-    const logo = new BaseComponent({
+    const logo = new BaseComponent({ tagName: 'div', classNames: 'logo' });
+
+    const logoName = new BaseComponent({
       tagName: 'h1',
-      classNames: 'header__logo',
-      textContent: 'Fun Chat',
+      classNames: 'logo__heading',
+      textContent: 'FUN CHAT',
     });
 
-    const about = new Link(
-      { tagName: 'div', classNames: 'about', textContent: 'about' },
-      { toNavigation: AppRoute.About, router },
-    );
+    const logoSvg = new SvgContainer('logo', { classNames: 'logo__icon' });
 
-    this.appendChildren([logo, about]);
+    logo.appendChildren([logoName, logoSvg]);
+
+    this.appendChild(logo);
   }
 }

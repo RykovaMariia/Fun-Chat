@@ -1,10 +1,9 @@
 @use '../../../styles/constants.scss';
 
 .link {
-  text-decoration: underline;
   cursor: pointer;
 
   &:hover {
-    color: constants.$color-text-completed;
+    color: constants.$color-button;
   }
 }

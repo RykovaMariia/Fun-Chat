@@ -17,20 +17,24 @@ function sendMessage(user: string, text: string) {
   });
 }
 
-export class SendMessageField extends BaseComponent {
+export class SendMessageForm extends BaseComponent {
   constructor(user?: string) {
     super({
-      tagName: 'div',
+      tagName: 'form',
       classNames: 'chat__send-message',
     });
 
     const inputText = new Input({ type: 'text', placeholder: 'message...', required: true });
     const sendMessageButton = new Button(
-      { classNames: 'button_send-message' },
+      { classNames: 'button_send-message', textContent: 'send' },
       {
-        onclick: () => {
+        type: 'submit',
+        onclick: (e) => {
+          e.preventDefault();
           if (user) {
             sendMessage(user, inputText.getValue());
+
+            inputText.setValue('');
           }
         },
       },

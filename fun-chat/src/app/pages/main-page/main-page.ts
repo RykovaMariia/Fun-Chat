@@ -1,3 +1,4 @@
+import './main-page.scss';
 import { BaseComponent } from 'Components/base-component';
 import { Footer } from 'Components/footer/footer';
 import { Header } from 'Components/header/header';
@@ -13,14 +14,15 @@ export class MainPage extends BaseComponent {
       classNames: 'main-page',
     });
 
-    const header = new Header(this.router);
+    const user = new BaseComponent({ tagName: 'div', classNames: 'header__user' });
     const userName = new BaseComponent({ tagName: 'div', classNames: 'user-name' });
-
-    loginService.subscribeLogin((log) => userName.setTextContent(log));
-    header.prependChild(userName);
-
     const logoutButton = new LogoutButton(this.router);
-    header.appendChild(logoutButton);
+    loginService.subscribeLogin((log) => userName.setTextContent(log));
+
+    user.appendChildren([userName, logoutButton]);
+
+    const header = new Header();
+    header.appendChild(user);
 
     const main = new Main();
 

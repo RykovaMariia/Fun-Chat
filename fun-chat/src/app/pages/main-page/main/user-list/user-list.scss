@@ -1,6 +1,18 @@
+@use '../../../../../styles/constants.scss';
+
 .user-list {
   width: 20%;
-  padding: 20px;
+  background-color: constants.$color-opacity40;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+
+  .input__field {
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    font-size: 1.5rem;
+  }
 }
 
 ul {
@@ -10,8 +22,34 @@ ul {
 li {
   cursor: pointer;
   user-select: none;
+  padding: 10px 20px 0;
+
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 100%;
+    display: inline-block;
+    margin-right: 10px;
+    background-color: constants.$color-border;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    margin: 10px auto 0;
+    height: 1px;
+    background-color: constants.$color-border;
+  }
+
+  &:hover {
+    background-color: constants.$color-card;
+  }
 }
 
 .activeUser {
-  color: green;
+  &::before {
+    background-color: constants.$color-active;
+  }
 }

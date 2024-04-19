@@ -1,15 +1,19 @@
 /* text-color */
 $color-text-dark: #202e39;
-$color-text-light: #d6d6d6;
-$color-text-invalid: #b75038;
-$color-text-completed: #adacac;
+$color-text-light: #eeeeee;
+$color-text-invalid: #d189a7;
+$color-text-grey: #a8a8a8;
 
 /* background-color */
 $color-background-body-light: #e5e3d2;
 $color-form: #fafafe70;
 $color-opacity: rgb(0 0 0 / 0%);
-$color-button: #f8cb00;
-$color-card: #202e39;
+$color-opacity10: rgba(255, 255, 255, 0.1);
+$color-opacity40: rgba(255, 255, 255, 0.4);
+$color-border: #a8a8a84c;
+$color-button: #878cff;
+$color-card: #878dff29;
+$color-active: #a7dd80;
 
 /* shadow-color */
 $color-shadow: 0 5px 15px rgb(0 0 0 / 10%);

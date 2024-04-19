@@ -6,7 +6,7 @@
   align-items: center;
   flex-direction: column;
   gap: 20px;
-  width: 300px;
+  width: 320px;
   padding: 40px 20px;
   border-radius: 10px;
   box-shadow: constants.$color-shadow;
@@ -23,17 +23,17 @@
   position: relative;
   text-transform: capitalize;
   top: 0;
-  padding: 5px 10px;
-  color: constants.$color-text-light;
+  padding: 10px;
+  color: constants.$color-text-grey;
   transition: all 0.7s ease;
 }
 
 .input_empty + .input__label {
   cursor: pointer;
   position: relative;
-  top: 40px;
+  top: 30px;
   padding: 5px 10px;
-  color: constants.$color-text-light;
+  color: constants.$color-text-grey;
   transition: all 0.7s ease;
 }
 
@@ -44,16 +44,16 @@
   padding: 5px 10px;
   border: 0;
   background-color: constants.$color-opacity;
-  border-bottom: 2px solid constants.$color-text-light;
+  border-bottom: 2px solid constants.$color-text-grey;
   transition: all 0.7s ease;
   font-family: inherit;
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: 100;
 
   &:focus,
   &:valid {
     outline: 0;
-    border-bottom-color: constants.$color-text-dark;
+    border-bottom-color: constants.$color-text-grey;
 
     &:invalid {
       border-bottom-color: constants.$color-text-invalid;
@@ -67,7 +67,7 @@
 
 .input_empty:focus + .input__label {
   color: constants.$color-text-dark;
-  transform: translateY(-40px);
+  transform: translateY(-30px);
 }
 
 .error {
@@ -76,6 +76,14 @@
   font-size: 1.2rem;
 }
 
+.about-chat {
+  width: 100%;
+  text-align: right;
+  font-size: 1.2rem;
+  padding: 10px 10px 0 10px;
+}
+
 .button_login {
   margin-top: 20px;
+  padding: 10px;
 }
