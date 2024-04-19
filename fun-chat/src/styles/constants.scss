@@ -1,6 +1,6 @@
 /* text-color */
 $color-text-dark: #202e39;
-$color-text-light: #eeeeee;
+$color-text-light: #eee;
 $color-text-invalid: #d189a7;
 $color-text-grey: #a8a8a8;
 
@@ -8,8 +8,8 @@ $color-text-grey: #a8a8a8;
 $color-background-body-light: #e5e3d2;
 $color-form: #fafafe70;
 $color-opacity: rgb(0 0 0 / 0%);
-$color-opacity10: rgba(255, 255, 255, 0.1);
-$color-opacity40: rgba(255, 255, 255, 0.4);
+$color-opacity10: rgb(255 255 255 / 10%);
+$color-opacity40: rgb(255 255 255 / 40%);
 $color-border: #a8a8a84c;
 $color-button: #878cff;
 $color-card: #878dff29;

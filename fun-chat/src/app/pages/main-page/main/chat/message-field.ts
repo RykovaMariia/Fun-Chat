@@ -1,4 +1,5 @@
 import { BaseComponent } from 'Components/base-component';
+import { Message } from 'Components/message/message';
 import { TypeName } from 'Enums/type.name';
 import { MessageResponse } from 'Interfaces/ws-response';
 import { messageService } from 'Services/chat-services/message-service';
@@ -19,16 +20,16 @@ function requestMessageHistory(login: string) {
 export class MessageField extends BaseComponent {
   private messageElements: BaseComponent<HTMLElement>[] = [];
 
-  constructor(user?: string) {
+  constructor(private user?: string) {
     super({
       tagName: 'div',
       classNames: 'chat__messages',
     });
 
-    if (!user) {
+    if (!this.user) {
       this.setTextContent('Select the user to send the message to...');
     } else {
-      requestMessageHistory(user);
+      requestMessageHistory(this.user);
 
       messageService.subscribeHistoryMessage(this.createMessage);
     }
@@ -40,9 +41,7 @@ export class MessageField extends BaseComponent {
     if (messages.length === 0) {
       this.setTextContent('Write your first message...');
     } else {
-      this.messageElements = messages.map(
-        (msg) => new BaseComponent({ tagName: 'div', textContent: msg.text }),
-      );
+      this.messageElements = messages.map((msg) => new Message(msg, this.user || ''));
       this.appendChildren(this.messageElements);
     }
   };

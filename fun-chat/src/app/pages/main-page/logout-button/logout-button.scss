@@ -9,6 +9,7 @@
 
   &:hover {
     box-shadow: none;
+
     & svg {
       stroke: constants.$color-button;
     }

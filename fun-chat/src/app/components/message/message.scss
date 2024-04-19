@@ -1,0 +1,61 @@
+@use '../../../styles/constants.scss';
+
+.message {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+
+  &_left {
+    justify-content: end;
+  }
+}
+
+.message__wrapper {
+  width: 300px;
+  padding: 10px;
+  background: constants.$color-opacity40;
+  position: relative;
+  border-radius: 10px 10px 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &:before {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    right: 100%;
+    top: calc(100% - 10px);
+    border-top: 10px solid transparent;
+    border-right: 5px solid constants.$color-opacity40;
+  }
+
+  &_left {
+    border-radius: 10px 10px 0 10px;
+  }
+
+  &_left:before {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    right: calc(0% - 5px);
+    top: calc(100% - 10px);
+    border-top: 10px solid transparent;
+    border-right: none;
+    border-left: 5px solid constants.$color-opacity40;
+  }
+}
+
+.message__info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+
+.message__status {
+  font-size: 1rem;
+  display: flex;
+  justify-content: end;
+}

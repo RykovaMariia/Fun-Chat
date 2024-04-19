@@ -40,10 +40,17 @@
 
 .chat__messages {
   height: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: start;
+  align-items: start;
+  gap: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-color: constants.$color-opacity40 constants.$color-opacity10;
+  scrollbar-width: thin;
+  padding-right: 25px;
 }
 
 .chat__send-message {
