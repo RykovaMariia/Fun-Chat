@@ -4,6 +4,7 @@ import { Footer } from 'Components/footer/footer';
 import { Header } from 'Components/header/header';
 import { Link } from 'Components/link/link';
 import { LoginForm } from 'Components/login-form/login-form';
+import { Modal } from 'Components/modal/modal';
 import { AppRoute } from 'Enums/app-route';
 import { TypeName } from 'Enums/type.name';
 import { IRouter } from 'Interfaces/router';
@@ -37,6 +38,10 @@ export class LoginPage extends BaseComponent {
     const footer = new Footer();
 
     this.appendChildren([header, heading, loginForm, footer]);
+
+    loginService.subscribeLoginError((errorText) => {
+      this.appendChild(new Modal(errorText));
+    });
   }
 
   loginForm(login: string, password: string) {
