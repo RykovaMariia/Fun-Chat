@@ -12,3 +12,15 @@ export function requestMessageHistory(login: string) {
     },
   });
 }
+
+export function requestMessageReadStatusChange(messageId: string) {
+  socketService.sendMessage({
+    id: '',
+    type: TypeName.msgRead,
+    payload: {
+      message: {
+        id: messageId,
+      },
+    },
+  });
+}

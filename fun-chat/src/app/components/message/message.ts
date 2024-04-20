@@ -15,6 +15,18 @@ function translateDate(date: number) {
     .replace('/', '.');
 }
 
+function getMessageStatus(message: MessageResponse) {
+  let status;
+  if (message.status.isReaded) {
+    status = 'readed';
+  } else if (message.status.isDelivered) {
+    status = 'delivered';
+  } else {
+    status = 'send';
+  }
+  return status;
+}
+
 export class Message extends BaseComponent {
   constructor(message: MessageResponse) {
     super({
@@ -22,11 +34,6 @@ export class Message extends BaseComponent {
       classNames: 'message',
     });
 
-    this.setClassName(
-      message.status.isReaded || message.to === messageService.getOpenChatUser()
-        ? 'message_read'
-        : 'message_unread',
-    );
     const messageWrapper = new BaseComponent({ tagName: 'div', classNames: 'message__wrapper' });
 
     if (message.from !== messageService.getOpenChatUser()) {
@@ -48,13 +55,18 @@ export class Message extends BaseComponent {
       textContent: message.text,
     });
 
-    const status = new BaseComponent({
-      tagName: 'div',
-      classNames: 'message__status',
-      textContent: 'status',
-    });
+    const statuses = new BaseComponent({ tagName: 'div', classNames: 'statuses' });
 
-    messageWrapper.appendChildren([messageInfo, messageText, status]);
+    if (message.from !== messageService.getOpenChatUser()) {
+      const edited = new BaseComponent({ tagName: 'div', classNames: 'edited' });
+
+      const status = new BaseComponent({ tagName: 'div', classNames: 'status' });
+
+      status.setTextContent(getMessageStatus(message));
+
+      statuses.appendChildren([status, edited]);
+    }
+    messageWrapper.appendChildren([messageInfo, messageText, statuses]);
 
     this.appendChild(messageWrapper);
   }

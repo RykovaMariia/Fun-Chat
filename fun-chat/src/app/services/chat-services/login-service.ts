@@ -27,6 +27,10 @@ export class LoginService {
   subscribeLogout(callback: () => void) {
     this.user.subscribe(callback, true);
   }
+
+  getLogin() {
+    return this.user.getValue();
+  }
 }
 
 export const loginService = new LoginService();

@@ -2,6 +2,7 @@ import { BaseComponent } from 'Components/base-component';
 import { Button } from 'Components/button/button';
 import { Input } from 'Components/input/input';
 import { TypeName } from 'Enums/type.name';
+import { messageService } from 'Services/chat-services/message-service';
 import { socketService } from 'Services/socket-service';
 
 function sendMessage(user: string, text: string) {
@@ -18,7 +19,7 @@ function sendMessage(user: string, text: string) {
 }
 
 export class SendMessageForm extends BaseComponent {
-  constructor(user?: string) {
+  constructor(user: string) {
     super({
       tagName: 'form',
       classNames: 'chat__send-message',
@@ -31,11 +32,9 @@ export class SendMessageForm extends BaseComponent {
         type: 'submit',
         onclick: (e) => {
           e.preventDefault();
-          if (user) {
-            sendMessage(user, inputText.getValue());
-
-            inputText.setValue('');
-          }
+          sendMessage(user, inputText.getValue());
+          inputText.setValue('');
+          messageService.readMessages();
         },
       },
     );

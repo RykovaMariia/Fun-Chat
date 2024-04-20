@@ -21,7 +21,7 @@
   flex-direction: column;
   gap: 10px;
 
-  &:before {
+  &::before {
     content: '';
     width: 0;
     height: 0;
@@ -33,10 +33,10 @@
   }
 
   &_left {
-    border-radius: 10px 10px 0 10px;
+    border-radius: 10px 10px 0;
   }
 
-  &_left:before {
+  &_left::before {
     content: '';
     width: 0;
     height: 0;
@@ -55,7 +55,7 @@
   font-size: 1rem;
 }
 
-.message__status {
+.statuses {
   font-size: 1rem;
   display: flex;
   justify-content: end;

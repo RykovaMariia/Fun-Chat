@@ -87,6 +87,6 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
   }
 
   scrollIntoView() {
-    this.element.scrollIntoView();
+    this.element.scrollIntoView({ block: 'end' });
   }
 }

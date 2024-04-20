@@ -10,6 +10,12 @@ export class MessageField extends BaseComponent {
 
   private unreadMessageElements: BaseComponent<HTMLElement>[] = [];
 
+  private line = new BaseComponent({
+    tagName: 'div',
+    classNames: 'message__line',
+    textContent: 'new messages',
+  });
+
   constructor(private user?: string) {
     super({
       tagName: 'div',
@@ -26,7 +32,9 @@ export class MessageField extends BaseComponent {
   }
 
   createMessage = (messages: MessageResponse[]) => {
+    const messagesWrapper = new BaseComponent({ tagName: 'div', classNames: 'messages' });
     [...this.readMessageElements, ...this.unreadMessageElements].forEach((el) => el.destroy());
+    this.line.destroy();
 
     if (messages.length === 0) {
       this.setTextContent('Write your first message...');
@@ -35,18 +43,25 @@ export class MessageField extends BaseComponent {
         .filter((msg) => msg.status.isReaded || msg.to === messageService.getOpenChatUser())
         .map((msg) => new Message(msg));
 
-      const line = new BaseComponent({
-        tagName: 'div',
-        classNames: 'message__line',
-        textContent: 'new messages',
-      });
-      line.scrollIntoView();
+      if (this.readMessageElements.length !== messages.length) {
+        this.unreadMessageElements = messages
+          .filter((msg) => !msg.status.isReaded && msg.to !== messageService.getOpenChatUser())
+          .map((msg) => new Message(msg));
 
-      this.unreadMessageElements = messages
-        .filter((msg) => !msg.status.isReaded)
-        .map((msg) => new Message(msg));
+        messagesWrapper.appendChildren([
+          ...this.readMessageElements,
+          this.line,
+          ...this.unreadMessageElements,
+        ]);
+        this.appendChild(messagesWrapper);
 
-      this.appendChildren([...this.readMessageElements, line, ...this.unreadMessageElements]);
+        this.line.scrollIntoView();
+      } else {
+        messagesWrapper.appendChildren(this.readMessageElements);
+        this.appendChild(messagesWrapper);
+
+        this.readMessageElements[this.readMessageElements.length - 1].scrollIntoView();
+      }
     }
   };
 

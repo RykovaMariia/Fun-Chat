@@ -41,15 +41,19 @@
 .chat__messages {
   height: 80%;
   width: 100%;
+  overflow: hidden auto;
+  scrollbar-color: constants.$color-opacity40 constants.$color-opacity10;
+  scrollbar-width: thin;
+  padding-right: 25px;
+}
+
+.messages {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: start;
   gap: 20px;
-  overflow: hidden auto;
-  scrollbar-color: constants.$color-opacity40 constants.$color-opacity10;
-  scrollbar-width: thin;
-  padding-right: 25px;
 }
 
 .message__line {
