@@ -12,7 +12,6 @@ export class UserList extends BaseComponent {
 
   private userInactiveList = new BaseComponent({ tagName: 'ul' });
 
-  // eslint-disable-next-line max-lines-per-function
   constructor(onClickUser: (user: string, isActive: boolean) => void) {
     super({
       tagName: 'section',

@@ -1,24 +1,14 @@
 import { BaseComponent } from 'Components/base-component';
 import { Message } from 'Components/message/message';
-import { TypeName } from 'Enums/type.name';
+
 import { MessageResponse } from 'Interfaces/ws-response';
 import { messageService } from 'Services/chat-services/message-service';
-import { socketService } from 'Services/socket-service';
-
-function requestMessageHistory(login: string) {
-  socketService.sendMessage({
-    id: '',
-    type: TypeName.msgFromUser,
-    payload: {
-      user: {
-        login,
-      },
-    },
-  });
-}
+import { requestMessageHistory } from 'Utils/request';
 
 export class MessageField extends BaseComponent {
-  private messageElements: BaseComponent<HTMLElement>[] = [];
+  private readMessageElements: BaseComponent<HTMLElement>[] = [];
+
+  private unreadMessageElements: BaseComponent<HTMLElement>[] = [];
 
   constructor(private user?: string) {
     super({
@@ -36,13 +26,27 @@ export class MessageField extends BaseComponent {
   }
 
   createMessage = (messages: MessageResponse[]) => {
-    this.messageElements.forEach((el) => el.destroy());
+    [...this.readMessageElements, ...this.unreadMessageElements].forEach((el) => el.destroy());
 
     if (messages.length === 0) {
       this.setTextContent('Write your first message...');
     } else {
-      this.messageElements = messages.map((msg) => new Message(msg, this.user || ''));
-      this.appendChildren(this.messageElements);
+      this.readMessageElements = messages
+        .filter((msg) => msg.status.isReaded || msg.to === messageService.getOpenChatUser())
+        .map((msg) => new Message(msg));
+
+      const line = new BaseComponent({
+        tagName: 'div',
+        classNames: 'message__line',
+        textContent: 'new messages',
+      });
+      line.scrollIntoView();
+
+      this.unreadMessageElements = messages
+        .filter((msg) => !msg.status.isReaded)
+        .map((msg) => new Message(msg));
+
+      this.appendChildren([...this.readMessageElements, line, ...this.unreadMessageElements]);
     }
   };
 

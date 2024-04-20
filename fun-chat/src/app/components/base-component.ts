@@ -85,4 +85,8 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
   destroy() {
     this.element.remove();
   }
+
+  scrollIntoView() {
+    this.element.scrollIntoView();
+  }
 }

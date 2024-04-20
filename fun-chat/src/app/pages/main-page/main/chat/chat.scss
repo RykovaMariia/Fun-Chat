@@ -46,11 +46,37 @@
   justify-content: start;
   align-items: start;
   gap: 20px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
   scrollbar-color: constants.$color-opacity40 constants.$color-opacity10;
   scrollbar-width: thin;
   padding-right: 25px;
+}
+
+.message__line {
+  text-align: center;
+  width: 100%;
+  font-size: 1.2rem;
+
+  &::before,
+  &::after {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    height: 1px;
+    background-color: constants.$color-border;
+    position: relative;
+  }
+
+  &::before {
+    margin-left: -100%;
+    left: -14px;
+  }
+
+  &::after {
+    margin-right: -100%;
+    right: -14px;
+  }
 }
 
 .chat__send-message {
