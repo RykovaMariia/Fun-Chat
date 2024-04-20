@@ -1,6 +1,9 @@
 import './user-list.scss';
 import { BaseComponent } from 'Components/base-component';
 import { Input } from 'Components/input/input';
+import { Link } from 'Components/link/link';
+import { AppRoute } from 'Enums/app-route';
+import { IRouter } from 'Interfaces/router';
 import { userListService } from 'Services/chat-services/user-list-service';
 
 export class UserList extends BaseComponent {
@@ -12,7 +15,8 @@ export class UserList extends BaseComponent {
 
   private userInactiveList = new BaseComponent({ tagName: 'ul' });
 
-  constructor(onClickUser: (user: string, isActive: boolean) => void) {
+  // eslint-disable-next-line max-lines-per-function
+  constructor(onClickUser: (user: string, isActive: boolean) => void, router: IRouter) {
     super({
       tagName: 'section',
       classNames: 'user-list',
@@ -57,7 +61,15 @@ export class UserList extends BaseComponent {
       this.userInactiveList.appendChildren(this.inactiveUsers);
     });
 
-    this.appendChildren([search, this.userActiveList, this.userInactiveList]);
+    const userAllList = new BaseComponent({ tagName: 'div', classNames: 'userList' });
+    userAllList.appendChildren([this.userActiveList, this.userInactiveList]);
+
+    const aboutFunChat = new Link(
+      { tagName: 'div', classNames: 'about-chat', textContent: 'about Fun Chat' },
+      { toNavigation: AppRoute.About, router },
+    );
+
+    this.appendChildren([search, userAllList, aboutFunChat]);
   }
 
   private searchUserName = (value: string) => {

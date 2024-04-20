@@ -35,7 +35,7 @@ export function createRoutes(router: IRouter) {
       path: AppRoute.About,
       component: async () => {
         const { AboutPage } = await import('Pages/about-page/about-page');
-        return new AboutPage();
+        return new AboutPage(router);
       },
     },
   ];

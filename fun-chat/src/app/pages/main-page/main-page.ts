@@ -24,7 +24,7 @@ export class MainPage extends BaseComponent {
     const header = new Header();
     header.appendChild(user);
 
-    const main = new Main();
+    const main = new Main(router);
 
     const footer = new Footer();
     this.appendChildren([header, main, footer]);
