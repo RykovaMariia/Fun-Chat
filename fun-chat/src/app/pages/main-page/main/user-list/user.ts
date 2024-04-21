@@ -1,7 +1,12 @@
 import { BaseComponent } from 'Components/base-component';
-import { messageService } from 'Services/chat-services/message-service';
+import { UnreadMessagesNumber, messageService } from 'Services/chat-services/message-service';
+import { requestMessageHistory } from 'Utils/request';
 
 export class User extends BaseComponent {
+  private unreadMsgCount: BaseComponent<HTMLElement>;
+
+  private userName: string;
+
   constructor({ isActive, userName }: { isActive: boolean; userName: string }) {
     super({
       tagName: 'li',
@@ -9,14 +14,23 @@ export class User extends BaseComponent {
       textContent: userName,
     });
 
-    const unreadMsgCount = new BaseComponent({ tagName: 'span', classNames: 'unread-msg-count' });
+    this.userName = userName;
+    this.unreadMsgCount = new BaseComponent({ tagName: 'span', classNames: 'unread-msg-count' });
 
-    messageService.subscribeUnreadMessagesNumber((unreadMessageCount) => {
-      if (userName in unreadMessageCount) {
-        unreadMsgCount.setTextContent(unreadMessageCount[userName].toString());
-      }
-    });
+    requestMessageHistory(userName);
 
-    this.appendChild(unreadMsgCount);
+    messageService.subscribeUnreadMessagesNumber(this.setUnreadMessagesNumber);
+
+    this.appendChild(this.unreadMsgCount);
+  }
+
+  setUnreadMessagesNumber = (unreadMessageCount: UnreadMessagesNumber) => {
+    if (this.userName in unreadMessageCount) {
+      this.unreadMsgCount.setTextContent(unreadMessageCount[this.userName].toString());
+    }
+  };
+
+  unsubscribeUnreadMessagesNumber() {
+    messageService.unsubscribeUnreadMessagesNumber(this.setUnreadMessagesNumber);
   }
 }

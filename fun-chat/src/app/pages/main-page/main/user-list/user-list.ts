@@ -34,9 +34,10 @@ export class UserList extends BaseComponent {
       this.activeUsers.forEach((user) => user.destroy());
       this.activeUsers = userNames.map((userName) => new User({ isActive: true, userName }));
 
-      this.activeUsers.forEach((user) =>
+      this.activeUsers.forEach((user, i) =>
         user.addEventListener('click', () => {
-          onClickUser(user.getTextContent() || '', true);
+          user.unsubscribeUnreadMessagesNumber();
+          onClickUser(userNames[i] || '', true);
         }),
       );
 
@@ -48,9 +49,10 @@ export class UserList extends BaseComponent {
       this.inactiveUsers.forEach((user) => user.destroy());
       this.inactiveUsers = userNames.map((userName) => new User({ isActive: false, userName }));
 
-      this.inactiveUsers.forEach((user) =>
+      this.inactiveUsers.forEach((user, i) =>
         user.addEventListener('click', () => {
-          onClickUser(user.getTextContent() || '', false);
+          user.unsubscribeUnreadMessagesNumber();
+          onClickUser(userNames[i] || '', false);
         }),
       );
 

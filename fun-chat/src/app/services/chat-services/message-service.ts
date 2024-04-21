@@ -31,21 +31,21 @@ export class MessageService {
   private onMsgFromUser = (response: MessageHistoryResponse) => {
     this.messageHistory.notify(() => response.payload.messages);
 
-    // else {
-    //   this.unreadMessagesNumber.notify({});
-    //   this.unreadMessagesNumber.notify((prev) => {
-    //     response.payload.messages.forEach((msg) => {
-    //       if (msg.from !== loginService.getLogin() && !msg.status.isReaded) {
-    //         if (msg.from in prev) {
-    //           prev[msg.from] += 1;
-    //         } else {
-    //           prev[msg.from] = 1;
-    //         }
-    //       }
-    //     });
-    //     return prev;
-    //   });
-    // }
+    this.unreadMessagesNumber.notify({});
+    this.unreadMessagesNumber.notify((prev) => {
+      response.payload.messages.forEach((msg) => {
+        if (msg.from !== loginService.getLogin() && !msg.status.isReaded) {
+          if (msg.from in prev) {
+            // eslint-disable-next-line no-param-reassign
+            prev[msg.from] += 1;
+          } else {
+            // eslint-disable-next-line no-param-reassign
+            prev[msg.from] = 1;
+          }
+        }
+      });
+      return prev;
+    });
   };
 
   private onMsgSend = (response: SendingMessageResponse) => {
