@@ -5,11 +5,12 @@ import { Link } from 'Components/link/link';
 import { AppRoute } from 'Enums/app-route';
 import { IRouter } from 'Interfaces/router';
 import { userListService } from 'Services/chat-services/user-list-service';
+import { User } from './user';
 
 export class UserList extends BaseComponent {
-  private activeUsers: BaseComponent[] = [];
+  private activeUsers: User[] = [];
 
-  private inactiveUsers: BaseComponent[] = [];
+  private inactiveUsers: User[] = [];
 
   private userActiveList = new BaseComponent({ tagName: 'ul' });
 
@@ -31,10 +32,7 @@ export class UserList extends BaseComponent {
     userListService.subscribeUserActive((userNames) => {
       search.setValue('');
       this.activeUsers.forEach((user) => user.destroy());
-      this.activeUsers = userNames.map(
-        (userName) =>
-          new BaseComponent({ tagName: 'li', classNames: 'activeUser', textContent: userName }),
-      );
+      this.activeUsers = userNames.map((userName) => new User({ isActive: true, userName }));
 
       this.activeUsers.forEach((user) =>
         user.addEventListener('click', () => {
@@ -48,10 +46,8 @@ export class UserList extends BaseComponent {
     userListService.subscribeUserInactive((userNames) => {
       search.setValue('');
       this.inactiveUsers.forEach((user) => user.destroy());
-      this.inactiveUsers = userNames.map(
-        (userName) =>
-          new BaseComponent({ tagName: 'li', classNames: 'inactiveUser', textContent: userName }),
-      );
+      this.inactiveUsers = userNames.map((userName) => new User({ isActive: false, userName }));
+
       this.inactiveUsers.forEach((user) =>
         user.addEventListener('click', () => {
           onClickUser(user.getTextContent() || '', false);

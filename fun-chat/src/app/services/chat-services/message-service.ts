@@ -19,6 +19,8 @@ export class MessageService {
 
   private openChatUser = new Observable<string>('');
 
+  private unreadMessagesNumber = new Observable<UnreadMessagesNumber>({});
+
   constructor() {
     socketService.subscribe(TypeName.msgFromUser, this.onMsgFromUser);
     // this.openChatUser.subscribe((user) => console.log(this.openChatUser));
@@ -27,7 +29,23 @@ export class MessageService {
   }
 
   private onMsgFromUser = (response: MessageHistoryResponse) => {
-    if (response.payload.messages) this.messageHistory.notify(() => response.payload.messages);
+    this.messageHistory.notify(() => response.payload.messages);
+
+    // else {
+    //   this.unreadMessagesNumber.notify({});
+    //   this.unreadMessagesNumber.notify((prev) => {
+    //     response.payload.messages.forEach((msg) => {
+    //       if (msg.from !== loginService.getLogin() && !msg.status.isReaded) {
+    //         if (msg.from in prev) {
+    //           prev[msg.from] += 1;
+    //         } else {
+    //           prev[msg.from] = 1;
+    //         }
+    //       }
+    //     });
+    //     return prev;
+    //   });
+    // }
   };
 
   private onMsgSend = (response: SendingMessageResponse) => {
@@ -92,6 +110,14 @@ export class MessageService {
 
   getOpenChatUser() {
     return this.openChatUser.getValue();
+  }
+
+  subscribeUnreadMessagesNumber(callback: (unreadMsgNumber: UnreadMessagesNumber) => void) {
+    this.unreadMessagesNumber.subscribe(callback, true);
+  }
+
+  unsubscribeUnreadMessagesNumber(callback: (messages: UnreadMessagesNumber) => void) {
+    this.unreadMessagesNumber.unsubscribe(callback);
   }
 }
 

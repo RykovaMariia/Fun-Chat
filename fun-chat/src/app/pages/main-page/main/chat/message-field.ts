@@ -55,7 +55,7 @@ export class MessageField extends BaseComponent {
         ]);
         this.appendChild(messagesWrapper);
 
-        this.line.scrollIntoView();
+        this.readMessageElements[this.readMessageElements.length - 1].scrollIntoView();
       } else {
         messagesWrapper.appendChildren(this.readMessageElements);
         this.appendChild(messagesWrapper);

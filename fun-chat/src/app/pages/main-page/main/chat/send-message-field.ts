@@ -32,9 +32,11 @@ export class SendMessageForm extends BaseComponent {
         type: 'submit',
         onclick: (e) => {
           e.preventDefault();
-          sendMessage(user, inputText.getValue());
-          inputText.setValue('');
-          messageService.readMessages();
+          if (inputText.getValue().length > 0) {
+            sendMessage(user, inputText.getValue());
+            inputText.setValue('');
+            messageService.readMessages();
+          }
         },
       },
     );
