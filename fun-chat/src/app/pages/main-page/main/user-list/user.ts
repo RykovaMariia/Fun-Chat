@@ -20,13 +20,12 @@ export class User extends BaseComponent {
     requestMessageHistory(userName);
 
     messageService.subscribeUnreadMessagesNumber(this.setUnreadMessagesNumber);
-
-    this.appendChild(this.unreadMsgCount);
   }
 
   setUnreadMessagesNumber = (unreadMessageCount: UnreadMessagesNumber) => {
     if (this.userName in unreadMessageCount) {
       this.unreadMsgCount.setTextContent(unreadMessageCount[this.userName].toString());
+      this.appendChild(this.unreadMsgCount);
     }
   };
 

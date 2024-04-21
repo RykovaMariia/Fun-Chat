@@ -34,6 +34,7 @@ ul {
 }
 
 li {
+  position: relative;
   cursor: pointer;
   user-select: none;
   padding: 10px 20px 0;
@@ -60,6 +61,19 @@ li {
   &:hover {
     background-color: constants.$color-card;
   }
+}
+
+.unread-msg-count {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  width: 15px;
+  height: 15px;
+  font-size: 0.9rem;
+  border-radius: 100%;
+  border: solid 1px constants.$color-border;
+  position: absolute;
+  right: 30px;
 }
 
 .activeUser {
