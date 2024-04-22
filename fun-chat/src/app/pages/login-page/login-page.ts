@@ -3,7 +3,7 @@ import { BaseComponent } from 'Components/base-component';
 import { Footer } from 'Components/footer/footer';
 import { Header } from 'Components/header/header';
 import { Link } from 'Components/link/link';
-import { LoginForm } from 'Components/login-form/login-form';
+import { LoginForm } from 'Pages/login-page/login-form/login-form';
 import { Modal } from 'Components/modal/modal';
 import { AppRoute } from 'Enums/app-route';
 import { TypeName } from 'Enums/type.name';
@@ -31,20 +31,21 @@ export class LoginPage extends BaseComponent {
       { toNavigation: AppRoute.About, router },
     );
 
-    this.loginForm = this.loginForm.bind(this);
-    const loginForm = new LoginForm(this.loginForm);
+    this.onSubmit = this.onSubmit.bind(this);
+    const loginForm = new LoginForm(this.onSubmit);
     loginForm.appendChild(aboutFunChat);
+    loginForm.prependChild(heading);
 
     const footer = new Footer();
 
-    this.appendChildren([header, heading, loginForm, footer]);
+    this.appendChildren([header, loginForm, footer]);
 
     loginService.subscribeLoginError((errorText) => {
       this.appendChild(new Modal(errorText));
     });
   }
 
-  loginForm(login: string, password: string) {
+  onSubmit(login: string, password: string) {
     socketService.sendMessage({
       id: '',
       type: TypeName.login,

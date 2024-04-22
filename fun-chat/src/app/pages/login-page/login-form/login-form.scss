@@ -1,4 +1,5 @@
-@use '../../../styles/constants.scss';
+@use '../../../../styles/constants.scss';
+@use '../../../../styles/mixins.scss';
 
 .login-form {
   display: flex;
@@ -11,6 +12,12 @@
   border-radius: 10px;
   box-shadow: constants.$color-shadow;
   background-color: constants.$color-form;
+
+  @include mixins.media-mobile {
+    width: 300px;
+    padding: 30px 10px;
+    font-size: 1.4rem;
+  }
 }
 
 .input {
@@ -63,6 +70,10 @@
       color: constants.$color-text-dark;
     }
   }
+
+  @include mixins.media-mobile {
+    font-size: 1.4rem;
+  }
 }
 
 .input_empty:focus + .input__label {
@@ -74,13 +85,9 @@
   width: 250px;
   color: constants.$color-text-invalid;
   font-size: 1.2rem;
-}
-
-.about-chat {
-  width: 100%;
-  text-align: right;
-  font-size: 1.2rem;
-  padding: 10px 10px 0;
+  @include mixins.media-mobile {
+    font-size: 1.1rem;
+  }
 }
 
 .button_login {

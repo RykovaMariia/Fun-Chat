@@ -1,4 +1,5 @@
 @use '../../../styles/constants.scss';
+@use '../../../styles/mixins.scss';
 
 .about-page {
   display: flex;
@@ -18,14 +19,32 @@
   background-color: constants.$color-opacity40;
   padding: 40px;
   border-radius: 40px 20px;
+
+  @include mixins.media-tablet {
+    width: 65%;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  @include mixins.media-mobile {
+    width: 80%;
+  }
 }
 
 .about__heading {
   font-weight: 400;
+
+  @include mixins.media-mobile {
+    font-size: 2rem;
+  }
 }
 
 .about__text {
   font-size: 1.8rem;
   text-align: center;
   line-height: 2;
+
+  @include mixins.media-mobile {
+    font-size: 1.3rem;
+  }
 }
