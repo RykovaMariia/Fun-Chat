@@ -19,48 +19,36 @@ class UserListService {
     socketService.subscribe(TypeName.userExternalLogin, this.onUserExternalLogin);
     socketService.subscribe(TypeName.userInactive, this.onUserInactive);
     socketService.subscribe(TypeName.userExternalLogout, this.onUserExternalLogout);
-
-    socketService.sendMessage({
-      id: '',
-      type: TypeName.userActive,
-      payload: null,
-    });
-
-    socketService.sendMessage({
-      id: '',
-      type: TypeName.userInactive,
-      payload: null,
-    });
   }
 
   private onUserActive = (response: UsersActiveResponse) => {
-    this.activeUsers.notify(response.payload.users.map((user) => user.login));
-    loginService.subscribeLogin((login) =>
-      this.activeUsers.notify((prev) => prev.filter((user) => user !== login)),
+    this.activeUsers.notify(
+      response.payload.users
+        .filter((user) => user.login !== loginService.getLogin())
+        .map((user) => user.login),
     );
   };
 
   private onUserExternalLogin = (response: UserExternalLoginResponse) => {
     const { login } = response.payload.user;
 
-    this.activeUsers.notify((prev) => {
-      if (!prev.includes(login)) {
+    if (!this.activeUsers.getValue().includes(login)) {
+      this.activeUsers.notify((prev) => {
         prev.push(login);
-      }
-      return prev;
-    });
+        return prev;
+      });
+    }
 
-    this.inactiveUsers.notify((prev) => {
-      const indexLog = prev.indexOf(login);
-      if (indexLog >= 0) {
-        prev.splice(indexLog, 1);
-      }
-      return prev;
-    });
+    if (this.inactiveUsers.getValue().includes(login)) {
+      this.inactiveUsers.notify((prev) => {
+        prev.splice(prev.indexOf(login), 1);
+        return prev;
+      });
+    }
   };
 
   subscribeUserActive(callback: (userName: string[]) => void) {
-    this.activeUsers.subscribe(callback, true);
+    this.activeUsers.subscribe(callback);
   }
 
   private onUserInactive = (response: UsersInactiveResponse) => {
@@ -71,24 +59,24 @@ class UserListService {
   };
 
   private onUserExternalLogout = (response: UserExternalLogoutResponse) => {
-    const { login } = response.payload.user;
-    this.inactiveUsers.notify((prev) => {
-      if (!prev.includes(login)) {
-        prev.push(login);
-      }
-      return prev;
-    });
-    this.activeUsers.notify((prev) => {
-      const indexLog = prev.indexOf(login);
-      if (indexLog >= 0) {
-        prev.splice(indexLog, 1);
-      }
-      return prev;
-    });
+    const { login: logoutUser } = response.payload.user;
+
+    if (!this.inactiveUsers.getValue().includes(logoutUser)) {
+      this.inactiveUsers.notify((prev) => {
+        prev.push(logoutUser);
+        return prev;
+      });
+    }
+    if (this.activeUsers.getValue().includes(logoutUser)) {
+      this.activeUsers.notify((prev) => {
+        prev.splice(prev.indexOf(logoutUser), 1);
+        return prev;
+      });
+    }
   };
 
   subscribeUserInactive(callback: (userName: string[]) => void) {
-    this.inactiveUsers.subscribe(callback, true);
+    this.inactiveUsers.subscribe(callback);
   }
 }
 

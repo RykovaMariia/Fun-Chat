@@ -18,6 +18,17 @@ export class LoginService {
 
   private onUserLogin = (response: UserLoginResponse) => {
     if (response.payload.user.isLogined) this.user.notify(response.payload.user.login);
+    socketService.sendMessage({
+      id: '',
+      type: TypeName.userActive,
+      payload: null,
+    });
+
+    socketService.sendMessage({
+      id: '',
+      type: TypeName.userInactive,
+      payload: null,
+    });
   };
 
   private onUserLogout = (response: UserLogoutResponse) => {

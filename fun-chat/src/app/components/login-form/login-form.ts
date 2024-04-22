@@ -43,6 +43,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
         attribute: { name: 'for', value: inputName },
       });
       const input = new Input({
+        type: i === 0 ? 'text' : 'password',
         id: inputName,
         required: true,
         patternValue: REG_VALID[i],

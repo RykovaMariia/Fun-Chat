@@ -1,9 +1,8 @@
 import './chat.scss';
 import { BaseComponent } from 'Components/base-component';
-import { messageService } from 'Services/chat-services/message-service';
 import { ChatHeader } from './chat-header';
 import { MessageField } from './message-field';
-import { SendMessageForm } from './send-message-field';
+import { SendMessageForm } from './send-message-form';
 
 export class Chat extends BaseComponent {
   private messageField: MessageField;
@@ -17,10 +16,6 @@ export class Chat extends BaseComponent {
     const chatHeader = new ChatHeader(user, isActive);
 
     this.messageField = new MessageField(user);
-
-    this.messageField.addEventListener('click', () => {
-      messageService.readMessages();
-    });
 
     this.appendChildren([chatHeader, this.messageField]);
 

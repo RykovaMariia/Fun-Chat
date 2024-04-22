@@ -22,16 +22,28 @@ export class MessageService {
   private unreadMessagesNumber = new Observable<UnreadMessagesNumber>({});
 
   constructor() {
-    socketService.subscribe(TypeName.msgFromUser, this.onMsgFromUser);
-    // this.openChatUser.subscribe((user) => console.log(this.openChatUser));
     socketService.subscribe(TypeName.msgSend, this.onMsgSend);
+    socketService.subscribe(TypeName.msgFromUser, this.onMsgFromUser);
     socketService.subscribe(TypeName.msgRead, this.onMsgRead);
   }
+
+  private onMsgSend = (response: SendingMessageResponse) => {
+    const recipient = response.payload.message.from;
+
+    requestMessageHistory(this.openChatUser.getValue());
+
+    this.unreadMessagesNumber.notify((prev) => {
+      const newObj = { ...prev };
+      if (recipient in prev) newObj[recipient] += 1;
+      else newObj[recipient] = 1;
+
+      return newObj;
+    });
+  };
 
   private onMsgFromUser = (response: MessageHistoryResponse) => {
     this.messageHistory.notify(() => response.payload.messages);
 
-    this.unreadMessagesNumber.notify({});
     this.unreadMessagesNumber.notify((prev) => {
       response.payload.messages.forEach((msg) => {
         if (msg.from !== loginService.getLogin() && !msg.status.isReaded) {
@@ -48,48 +60,25 @@ export class MessageService {
     });
   };
 
-  private onMsgSend = (response: SendingMessageResponse) => {
-    const recipient = response.payload.message.from;
-    const sender = response.payload.message.from;
-
-    if (recipient === this.openChatUser.getValue() || sender === loginService.getLogin()) {
-      requestMessageHistory(this.openChatUser.getValue());
-    }
-    // else {
-    //   this.unreadMessagesNumber.notify((prev) => {
-    //     const newObj = { ...prev };
-    //     if (recipient in prev) newObj[recipient] += 1;
-    //     else newObj[recipient] = 1;
-
-    //     return newObj;
-    //   });
-    // }
-  };
-
   readMessages() {
     this.messageHistory.getValue().forEach((message) => {
       if (message.to === loginService.getLogin()) {
         requestMessageReadStatusChange(message.id);
-        requestMessageHistory(this.openChatUser.getValue());
       }
     });
   }
 
   private onMsgRead = (response: MessageReadStatusResponse) => {
-    const recipient = response.payload.message.from;
-
-    if (recipient === this.openChatUser.getValue()) {
-      requestMessageHistory(this.openChatUser.getValue());
-    }
-    // else {
-    //   this.unreadMessagesNumber.notify((prev) => {
-    //     const newObj = { ...prev };
-    //     if (recipient in prev) newObj[recipient] += 1;
-    //     else newObj[recipient] = 1;
-
-    //     return newObj;
-    //   });
-    // }
+    requestMessageHistory(this.openChatUser.getValue());
+    this.messageHistory.getValue().forEach((message) => {
+      if (message.id === response.payload.message.id) {
+        this.unreadMessagesNumber.notify((prev) => {
+          const newObj = { ...prev };
+          if (message.from in prev) delete newObj[message.from];
+          return newObj;
+        });
+      }
+    });
   };
 
   subscribeHistoryMessage(callback: (messages: MessageResponse[]) => void) {

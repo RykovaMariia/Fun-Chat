@@ -31,12 +31,10 @@ export class UserList extends BaseComponent {
 
     userListService.subscribeUserActive((userNames) => {
       search.setValue('');
-      this.activeUsers.forEach((user) => user.destroy());
+      this.activeUsers.forEach((user) => user.destroyAndUnsubscribe());
       this.activeUsers = userNames.map((userName) => new User({ isActive: true, userName }));
-
       this.activeUsers.forEach((user, i) =>
         user.addEventListener('click', () => {
-          user.unsubscribeUnreadMessagesNumber();
           onClickUser(userNames[i] || '', true);
         }),
       );
@@ -46,12 +44,10 @@ export class UserList extends BaseComponent {
 
     userListService.subscribeUserInactive((userNames) => {
       search.setValue('');
-      this.inactiveUsers.forEach((user) => user.destroy());
+      this.inactiveUsers.forEach((user) => user.destroyAndUnsubscribe());
       this.inactiveUsers = userNames.map((userName) => new User({ isActive: false, userName }));
-
       this.inactiveUsers.forEach((user, i) =>
         user.addEventListener('click', () => {
-          user.unsubscribeUnreadMessagesNumber();
           onClickUser(userNames[i] || '', false);
         }),
       );

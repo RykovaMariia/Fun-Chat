@@ -26,10 +26,13 @@ export class User extends BaseComponent {
     if (this.userName in unreadMessageCount) {
       this.unreadMsgCount.setTextContent(unreadMessageCount[this.userName].toString());
       this.appendChild(this.unreadMsgCount);
+    } else {
+      this.unreadMsgCount.destroy();
     }
   };
 
-  unsubscribeUnreadMessagesNumber() {
+  destroyAndUnsubscribe() {
+    this.destroy();
     messageService.unsubscribeUnreadMessagesNumber(this.setUnreadMessagesNumber);
   }
 }

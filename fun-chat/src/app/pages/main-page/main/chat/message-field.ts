@@ -6,9 +6,9 @@ import { messageService } from 'Services/chat-services/message-service';
 import { requestMessageHistory } from 'Utils/request';
 
 export class MessageField extends BaseComponent {
-  private readMessageElements: BaseComponent<HTMLElement>[] = [];
+  private readMessageElements: Message[] = [];
 
-  private unreadMessageElements: BaseComponent<HTMLElement>[] = [];
+  private unreadMessageElements: Message[] = [];
 
   private line = new BaseComponent({
     tagName: 'div',
@@ -16,56 +16,62 @@ export class MessageField extends BaseComponent {
     textContent: 'new messages',
   });
 
-  constructor(private user?: string) {
+  constructor(user?: string) {
     super({
       tagName: 'div',
       classNames: 'chat__messages',
     });
 
-    if (!this.user) {
+    if (!user) {
       this.setTextContent('Select the user to send the message to...');
     } else {
-      requestMessageHistory(this.user);
+      requestMessageHistory(user);
 
-      messageService.subscribeHistoryMessage(this.createMessage);
+      this.addEventListener('click', () => {
+        messageService.readMessages();
+      });
+
+      messageService.subscribeHistoryMessage(this.createMessages);
     }
   }
 
-  createMessage = (messages: MessageResponse[]) => {
+  createMessages = (messages: MessageResponse[]) => {
     const messagesWrapper = new BaseComponent({ tagName: 'div', classNames: 'messages' });
     [...this.readMessageElements, ...this.unreadMessageElements].forEach((el) => el.destroy());
     this.line.destroy();
 
     if (messages.length === 0) {
       this.setTextContent('Write your first message...');
-    } else {
-      this.readMessageElements = messages
-        .filter((msg) => msg.status.isReaded || msg.to === messageService.getOpenChatUser())
+      return;
+    }
+    this.setTextContent('');
+    this.readMessageElements = messages
+      .filter((msg) => msg.status.isReaded || msg.to === messageService.getOpenChatUser())
+      .map((msg) => new Message(msg));
+
+    if (this.readMessageElements.length !== messages.length) {
+      this.unreadMessageElements = messages
+        .filter((msg) => !msg.status.isReaded && msg.to !== messageService.getOpenChatUser())
         .map((msg) => new Message(msg));
 
-      if (this.readMessageElements.length !== messages.length) {
-        this.unreadMessageElements = messages
-          .filter((msg) => !msg.status.isReaded && msg.to !== messageService.getOpenChatUser())
-          .map((msg) => new Message(msg));
-
-        messagesWrapper.appendChildren([
-          ...this.readMessageElements,
-          this.line,
-          ...this.unreadMessageElements,
-        ]);
-        this.appendChild(messagesWrapper);
-
-        this.readMessageElements[this.readMessageElements.length - 1].scrollIntoView();
-      } else {
-        messagesWrapper.appendChildren(this.readMessageElements);
-        this.appendChild(messagesWrapper);
-
+      messagesWrapper.appendChildren([
+        ...this.readMessageElements,
+        this.line,
+        ...this.unreadMessageElements,
+      ]);
+      this.appendChild(messagesWrapper);
+      if (this.readMessageElements.length) {
         this.readMessageElements[this.readMessageElements.length - 1].scrollIntoView();
       }
+    } else {
+      messagesWrapper.appendChildren(this.readMessageElements);
+      this.appendChild(messagesWrapper);
+
+      this.readMessageElements[this.readMessageElements.length - 1].scrollIntoView();
     }
   };
 
   unsubscribeHistoryMessage() {
-    messageService.unsubscribeHistoryMessage(this.createMessage);
+    messageService.unsubscribeHistoryMessage(this.createMessages);
   }
 }
