@@ -28,19 +28,16 @@ export class MessageField extends BaseComponent {
         messageService.readMessages();
       });
 
-      this.addEventListener('wheel', (event) => {
-        const isScrollingDown = event.deltaY > 0;
-        if (
-          isScrollingDown &&
-          this.getScrollHeight() - this.getScrollTop() <= this.getClientHeight()
-        ) {
-          messageService.readMessages();
-        }
-      });
-
       messageService.subscribeMessageHistory(this.createMessages);
     }
   }
+
+  readMessageWhenScrolling = (e: WheelEvent) => {
+    const isScrollingDown = e.deltaY > 0;
+    if (isScrollingDown && this.getScrollHeight() - this.getScrollTop() <= this.getClientHeight()) {
+      messageService.readMessages();
+    }
+  };
 
   createMessages = (messages: MessageResponse[]) => {
     const messagesWrapper = new BaseComponent({ tagName: 'div', classNames: 'messages' });
@@ -58,6 +55,8 @@ export class MessageField extends BaseComponent {
       .map((msg) => new Message(msg));
 
     if (this.readMessageElements.length !== messages.length) {
+      this.addEventListener('wheel', this.readMessageWhenScrolling);
+
       this.unreadMessageElements = messages
         .filter((msg) => !msg.status.isReaded && msg.to !== messageService.getOpenChatUser())
         .map((msg) => new Message(msg));
@@ -72,6 +71,7 @@ export class MessageField extends BaseComponent {
         this.readMessageElements[this.readMessageElements.length - 1].scrollIntoView();
       }
     } else {
+      this.getElement().removeEventListener('wheel', this.readMessageWhenScrolling);
       messagesWrapper.appendChildren(this.readMessageElements);
       this.appendChild(messagesWrapper);
 
