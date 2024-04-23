@@ -1,4 +1,5 @@
 import {
+  MessageDeletionResponse,
   MessageHistoryResponse,
   MessageReadStatusResponse,
   MessageResponse,
@@ -25,6 +26,7 @@ export class MessageService {
     socketService.subscribe(TypeName.msgSend, this.onMsgSend);
     socketService.subscribe(TypeName.msgFromUser, this.onMsgFromUser);
     socketService.subscribe(TypeName.msgRead, this.onMsgRead);
+    socketService.subscribe(TypeName.msgDelete, this.onMsgDelete);
   }
 
   private onMsgSend = (response: SendingMessageResponse) => {
@@ -82,6 +84,25 @@ export class MessageService {
           return newObj;
         });
       }
+    });
+  };
+
+  private onMsgDelete = (response: MessageDeletionResponse) => {
+    this.messageHistory.notify((prev) => {
+      prev.forEach((message, i) => {
+        if (message.id === response.payload.message.id) {
+          if (!message.status.isReaded) {
+            this.unreadMessagesNumber.notify((prevNumber) => {
+              // eslint-disable-next-line no-param-reassign
+              prevNumber[message.from] -= 1;
+              return prevNumber;
+            });
+          }
+        }
+        prev.splice(i, 1);
+      });
+
+      return prev;
     });
   };
 

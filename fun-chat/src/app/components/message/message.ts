@@ -1,6 +1,8 @@
+import { ContextMenu } from 'Components/context-menu/context-menu';
 import './message.scss';
 import { BaseComponent } from 'Components/base-component';
 import { MessageResponse } from 'Interfaces/ws-response';
+import { loginService } from 'Services/chat-services/login-service';
 import { messageService } from 'Services/chat-services/message-service';
 
 function translateDate(date: number) {
@@ -36,9 +38,15 @@ export class Message extends BaseComponent {
 
     const messageWrapper = new BaseComponent({ tagName: 'div', classNames: 'message__wrapper' });
 
-    if (message.from !== messageService.getOpenChatUser()) {
-      this.setClassName('message_left');
-      messageWrapper.setClassName('message__wrapper_left');
+    if (message.to !== loginService.getLogin()) {
+      this.setClassName('message_right');
+      messageWrapper.setClassName('message__wrapper_right');
+
+      this.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        const contextMenu = new ContextMenu(message.id);
+        this.prependChild(contextMenu);
+      });
     }
 
     const fromName = new BaseComponent({ tagName: 'div', textContent: message.from });

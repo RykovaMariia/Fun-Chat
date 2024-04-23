@@ -38,3 +38,15 @@ export function requestActiveAndInactiveUsers() {
     payload: null,
   });
 }
+
+export function requestDeleteMessage(idMessage: string) {
+  socketService.sendMessage({
+    id: '',
+    type: TypeName.msgDelete,
+    payload: {
+      message: {
+        id: idMessage,
+      },
+    },
+  });
+}

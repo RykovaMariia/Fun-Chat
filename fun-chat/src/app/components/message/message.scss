@@ -4,8 +4,9 @@
   width: 100%;
   display: flex;
   justify-content: start;
+  position: relative;
 
-  &_left {
+  &_right {
     justify-content: end;
   }
 }
@@ -33,11 +34,11 @@
     border-right: 5px solid constants.$color-opacity40;
   }
 
-  &_left {
+  &_right {
     border-radius: 10px 10px 0;
   }
 
-  &_left::before {
+  &_right::before {
     content: '';
     width: 0;
     height: 0;
