@@ -69,6 +69,10 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
     children.forEach((el) => this.appendChild(el.getElement()));
   }
 
+  prependChildren(children: BaseComponent[]): void {
+    children.forEach((el) => this.prependChild(el.getElement()));
+  }
+
   setAttribute(attribute: AttributeElement) {
     if (attribute) {
       this.element.setAttribute(attribute.name, attribute.value);

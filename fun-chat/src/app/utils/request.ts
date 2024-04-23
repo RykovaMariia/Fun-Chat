@@ -24,3 +24,17 @@ export function requestMessageReadStatusChange(messageId: string) {
     },
   });
 }
+
+export function requestActiveAndInactiveUsers() {
+  socketService.sendMessage({
+    id: '',
+    type: TypeName.userActive,
+    payload: null,
+  });
+
+  socketService.sendMessage({
+    id: '',
+    type: TypeName.userInactive,
+    payload: null,
+  });
+}

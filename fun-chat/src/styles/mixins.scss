@@ -6,6 +6,12 @@
   }
 }
 
+@mixin media-middle {
+  @media (max-width: constants.$tablet-middle) {
+    @content;
+  }
+}
+
 @mixin media-mobile {
   @media (max-width: constants.$mobile-width) {
     @content;

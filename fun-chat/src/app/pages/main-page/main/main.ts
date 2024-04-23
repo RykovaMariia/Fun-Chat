@@ -19,7 +19,6 @@ export class Main extends BaseComponent {
       chat.destroy();
       chat = new Chat(user, isActive);
       this.appendChild(chat);
-
       messageService.notifyOpenChatUser(user);
     }, router);
 

@@ -11,7 +11,8 @@
 }
 
 .message__wrapper {
-  width: 300px;
+  max-width: 300px;
+  width: 80%;
   padding: 10px;
   background: constants.$color-opacity40;
   position: relative;

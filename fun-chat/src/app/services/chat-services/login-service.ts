@@ -1,5 +1,6 @@
 import { ErrorResponse, UserLoginResponse, UserLogoutResponse } from 'Interfaces/ws-response';
 import { TypeName } from 'Enums/type.name';
+import { requestActiveAndInactiveUsers } from 'Utils/request';
 import { socketService } from '../socket-service';
 import { Observable } from '../observable';
 
@@ -18,17 +19,7 @@ export class LoginService {
 
   private onUserLogin = (response: UserLoginResponse) => {
     if (response.payload.user.isLogined) this.user.notify(response.payload.user.login);
-    socketService.sendMessage({
-      id: '',
-      type: TypeName.userActive,
-      payload: null,
-    });
-
-    socketService.sendMessage({
-      id: '',
-      type: TypeName.userInactive,
-      payload: null,
-    });
+    requestActiveAndInactiveUsers();
   };
 
   private onUserLogout = (response: UserLogoutResponse) => {

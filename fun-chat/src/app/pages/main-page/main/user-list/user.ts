@@ -7,12 +7,22 @@ export class User extends BaseComponent {
 
   private userName: string;
 
-  constructor({ isActive, userName }: { isActive: boolean; userName: string }) {
+  constructor({
+    isActive,
+    userName,
+    onClickUser,
+  }: {
+    isActive: boolean;
+    userName: string;
+    onClickUser: () => void;
+  }) {
     super({
       tagName: 'li',
       classNames: isActive ? 'activeUser' : 'inactiveUser',
       textContent: userName,
     });
+
+    this.addEventListener('click', onClickUser);
 
     this.userName = userName;
     this.unreadMsgCount = new BaseComponent({ tagName: 'span', classNames: 'unread-msg-count' });
