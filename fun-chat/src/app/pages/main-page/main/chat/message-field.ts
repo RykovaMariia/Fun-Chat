@@ -28,12 +28,23 @@ export class MessageField extends BaseComponent {
         messageService.readMessages();
       });
 
+      this.addEventListener('wheel', (event) => {
+        const isScrollingDown = event.deltaY > 0;
+        if (
+          isScrollingDown &&
+          this.getScrollHeight() - this.getScrollTop() <= this.getClientHeight()
+        ) {
+          messageService.readMessages();
+        }
+      });
+
       messageService.subscribeMessageHistory(this.createMessages);
     }
   }
 
   createMessages = (messages: MessageResponse[]) => {
     const messagesWrapper = new BaseComponent({ tagName: 'div', classNames: 'messages' });
+
     [...this.readMessageElements, ...this.unreadMessageElements].forEach((el) => el.destroy());
     this.line.destroy();
 

@@ -93,4 +93,16 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
   scrollIntoView() {
     this.element.scrollIntoView({ block: 'start' });
   }
+
+  getScrollHeight() {
+    return this.element.scrollHeight;
+  }
+
+  getScrollTop() {
+    return this.element.scrollTop;
+  }
+
+  getClientHeight() {
+    return this.element.clientHeight;
+  }
 }
