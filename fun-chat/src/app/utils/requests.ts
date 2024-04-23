@@ -50,3 +50,16 @@ export function requestDeleteMessage(idMessage: string) {
     },
   });
 }
+
+export function requestEditMessage(idMessage: string, editedMessage: string) {
+  socketService.sendMessage({
+    id: '',
+    type: TypeName.msgEdit,
+    payload: {
+      message: {
+        id: idMessage,
+        text: editedMessage,
+      },
+    },
+  });
+}

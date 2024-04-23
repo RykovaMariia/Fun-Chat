@@ -3,16 +3,21 @@ import {
   MessageHistoryResponse,
   MessageReadStatusResponse,
   MessageResponse,
+  MessageTextEditingResponse,
   SendingMessageResponse,
 } from 'Interfaces/ws-response';
 import { TypeName } from 'Enums/type.name';
-import { requestMessageHistory, requestMessageReadStatusChange } from 'Utils/request';
+import { requestMessageHistory, requestMessageReadStatusChange } from 'Utils/requests';
 import { socketService } from '../socket-service';
 import { Observable } from '../observable';
 import { loginService } from './login-service';
 
-export interface UnreadMessagesNumber {
-  [user: string]: number;
+export interface UnreadMessages {
+  [user: string]: MessageResponse[];
+}
+
+interface EditText {
+  [id: string]: string;
 }
 
 export class MessageService {
@@ -20,13 +25,16 @@ export class MessageService {
 
   private openChatUser = new Observable<string>('');
 
-  private unreadMessagesNumber = new Observable<UnreadMessagesNumber>({});
+  private unreadMessages = new Observable<UnreadMessages>({});
+
+  private editText = new Observable<EditText>({});
 
   constructor() {
     socketService.subscribe(TypeName.msgSend, this.onMsgSend);
     socketService.subscribe(TypeName.msgFromUser, this.onMsgFromUser);
     socketService.subscribe(TypeName.msgRead, this.onMsgRead);
     socketService.subscribe(TypeName.msgDelete, this.onMsgDelete);
+    socketService.subscribe(TypeName.msgEdit, this.onMsgEdit);
   }
 
   private onMsgSend = (response: SendingMessageResponse) => {
@@ -34,11 +42,10 @@ export class MessageService {
 
     requestMessageHistory(this.openChatUser.getValue());
 
-    this.unreadMessagesNumber.notify((prev) => {
+    this.unreadMessages.notify((prev) => {
       const newObj = { ...prev };
-      if (recipient in prev) newObj[recipient] += 1;
-      else newObj[recipient] = 1;
-
+      if (recipient in prev) newObj[recipient].push(response.payload.message);
+      else newObj[recipient] = [response.payload.message];
       return newObj;
     });
   };
@@ -49,15 +56,15 @@ export class MessageService {
     }
 
     if (response.id && response.id !== loginService.getLogin()) {
-      this.unreadMessagesNumber.notify((prev) => {
+      this.unreadMessages.notify((prev) => {
         const newObj = { ...prev };
         if (response.id && response.id in prev) return prev;
         response.payload.messages.forEach((msg) => {
           if (msg.from !== loginService.getLogin() && !msg.status.isReaded) {
             if (msg.from in prev) {
-              newObj[msg.from] += 1;
+              newObj[msg.from].push(msg);
             } else {
-              newObj[msg.from] = 1;
+              newObj[msg.from] = [msg];
             }
           }
         });
@@ -78,7 +85,7 @@ export class MessageService {
     requestMessageHistory(this.openChatUser.getValue());
     this.messageHistory.getValue().forEach((message) => {
       if (message.id === response.payload.message.id) {
-        this.unreadMessagesNumber.notify((prev) => {
+        this.unreadMessages.notify((prev) => {
           const newObj = { ...prev };
           if (message.from in prev) delete newObj[message.from];
           return newObj;
@@ -89,28 +96,47 @@ export class MessageService {
 
   private onMsgDelete = (response: MessageDeletionResponse) => {
     this.messageHistory.notify((prev) => {
-      prev.forEach((message, i) => {
-        if (message.id === response.payload.message.id) {
-          if (!message.status.isReaded) {
-            this.unreadMessagesNumber.notify((prevNumber) => {
-              // eslint-disable-next-line no-param-reassign
-              prevNumber[message.from] -= 1;
-              return prevNumber;
-            });
-          }
+      prev.forEach((msg, i) => {
+        if (msg.id === response.payload.message.id) {
+          prev.splice(i, 1);
         }
-        prev.splice(i, 1);
+      });
+
+      return prev;
+    });
+
+    this.unreadMessages.notify((prev) => {
+      Object.values(prev).forEach((msgs) => {
+        msgs.forEach((msg, i) => {
+          if (msg.id === response.payload.message.id) {
+            msgs.splice(i, 1);
+          }
+        });
+      });
+      return prev;
+    });
+  };
+
+  private onMsgEdit = (response: MessageTextEditingResponse) => {
+    this.messageHistory.notify((prev) => {
+      prev.forEach((msg, i) => {
+        if (msg.id === response.payload.message.id) {
+          // eslint-disable-next-line no-param-reassign
+          prev[i].text = response.payload.message.text;
+          // eslint-disable-next-line no-param-reassign
+          prev[i].status.isEdited = true;
+        }
       });
 
       return prev;
     });
   };
 
-  subscribeHistoryMessage(callback: (messages: MessageResponse[]) => void) {
+  subscribeMessageHistory(callback: (messages: MessageResponse[]) => void) {
     this.messageHistory.subscribe(callback);
   }
 
-  unsubscribeHistoryMessage(callback: (messages: MessageResponse[]) => void) {
+  unsubscribeMessageHistory(callback: (messages: MessageResponse[]) => void) {
     this.messageHistory.unsubscribe(callback);
   }
 
@@ -126,12 +152,24 @@ export class MessageService {
     return this.openChatUser.getValue();
   }
 
-  subscribeUnreadMessagesNumber(callback: (unreadMsgNumber: UnreadMessagesNumber) => void) {
-    this.unreadMessagesNumber.subscribe(callback, true);
+  subscribeUnreadMessages(callback: (unreadMsgNumber: UnreadMessages) => void) {
+    this.unreadMessages.subscribe(callback, true);
   }
 
-  unsubscribeUnreadMessagesNumber(callback: (messages: UnreadMessagesNumber) => void) {
-    this.unreadMessagesNumber.unsubscribe(callback);
+  unsubscribeUnreadMessages(callback: (messages: UnreadMessages) => void) {
+    this.unreadMessages.unsubscribe(callback);
+  }
+
+  changeEditText(editText: EditText) {
+    this.editText.notify(editText);
+  }
+
+  getEditText() {
+    return this.editText.getValue();
+  }
+
+  subscribeEditState(callback: (editText: EditText) => void) {
+    this.editText.subscribe(callback, true);
   }
 }
 

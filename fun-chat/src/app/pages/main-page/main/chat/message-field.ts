@@ -3,7 +3,7 @@ import { Message } from 'Components/message/message';
 
 import { MessageResponse } from 'Interfaces/ws-response';
 import { messageService } from 'Services/chat-services/message-service';
-import { requestMessageHistory } from 'Utils/request';
+import { requestMessageHistory } from 'Utils/requests';
 
 export class MessageField extends BaseComponent {
   private readMessageElements: Message[] = [];
@@ -28,7 +28,7 @@ export class MessageField extends BaseComponent {
         messageService.readMessages();
       });
 
-      messageService.subscribeHistoryMessage(this.createMessages);
+      messageService.subscribeMessageHistory(this.createMessages);
     }
   }
 
@@ -69,6 +69,6 @@ export class MessageField extends BaseComponent {
   };
 
   unsubscribeHistoryMessage() {
-    messageService.unsubscribeHistoryMessage(this.createMessages);
+    messageService.unsubscribeMessageHistory(this.createMessages);
   }
 }

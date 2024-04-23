@@ -44,7 +44,7 @@ export class Message extends BaseComponent {
 
       this.addEventListener('contextmenu', (e) => {
         e.preventDefault();
-        const contextMenu = new ContextMenu(message.id);
+        const contextMenu = new ContextMenu(message);
         this.prependChild(contextMenu);
       });
     }
@@ -70,9 +70,10 @@ export class Message extends BaseComponent {
 
       const status = new BaseComponent({ tagName: 'div', classNames: 'status' });
 
+      edited.setTextContent(message.status.isEdited ? 'edited' : '');
       status.setTextContent(getMessageStatus(message));
 
-      statuses.appendChildren([status, edited]);
+      statuses.appendChildren([edited, status]);
     }
     messageWrapper.appendChildren([messageInfo, messageText, statuses]);
 

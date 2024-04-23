@@ -34,7 +34,7 @@ interface MessagePayloadRequest {
 interface EditMessagePayloadRequest {
   message: {
     id: string;
-    ext: string;
+    text: string;
   };
 }
 

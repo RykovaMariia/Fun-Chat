@@ -53,6 +53,16 @@ interface MessageDeleteStatusPayloadResponse {
   };
 }
 
+interface MessageEditStatusPayloadResponse {
+  message: {
+    id: string;
+    text: string;
+    status: {
+      isEdited: boolean;
+    };
+  };
+}
+
 interface ErrorPayload {
   error: string;
 }
@@ -78,5 +88,5 @@ export interface MessageReadStatusResponse
 export interface MessageDeletionResponse
   extends BaseResponseRequest<TypeName.msgDelete, MessageDeleteStatusPayloadResponse> {}
 export interface MessageTextEditingResponse
-  extends BaseResponseRequest<TypeName.msgEdit, MessagePayloadResponse> {}
+  extends BaseResponseRequest<TypeName.msgEdit, MessageEditStatusPayloadResponse> {}
 export interface ErrorResponse extends BaseResponseRequest<TypeName.error, ErrorPayload> {}

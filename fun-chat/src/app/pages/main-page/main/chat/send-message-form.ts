@@ -4,6 +4,7 @@ import { Input } from 'Components/input/input';
 import { TypeName } from 'Enums/type.name';
 import { messageService } from 'Services/chat-services/message-service';
 import { socketService } from 'Services/socket-service';
+import { requestEditMessage } from 'Utils/requests';
 
 function sendMessage(user: string, text: string) {
   socketService.sendMessage({
@@ -26,20 +27,35 @@ export class SendMessageForm extends BaseComponent {
     });
 
     const inputText = new Input({ type: 'text', placeholder: 'message...', required: true });
+
     const sendMessageButton = new Button(
       { classNames: 'button_send-message', textContent: 'send' },
       {
         type: 'submit',
         onclick: (e) => {
           e.preventDefault();
-          if (inputText.getValue().length > 0) {
+
+          const editMessage = messageService.getEditText();
+          const editId = Object.keys(editMessage)[0];
+
+          if (inputText.getValue().length > 0 && !editId) {
             sendMessage(user, inputText.getValue());
-            inputText.setValue('');
             messageService.readMessages();
           }
+          if (messageService.getEditText()) {
+            requestEditMessage(editId, inputText.getValue());
+            messageService.changeEditText({});
+          }
+          inputText.setValue('');
         },
       },
     );
+
+    messageService.subscribeEditState((editText) => {
+      if (Object.values(editText).length) {
+        inputText.setValue(Object.values(editText)[0]);
+      }
+    });
 
     this.appendChildren([inputText, sendMessageButton]);
   }

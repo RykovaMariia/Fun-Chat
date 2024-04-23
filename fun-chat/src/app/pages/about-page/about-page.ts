@@ -4,7 +4,7 @@ import { BaseComponent } from 'Components/base-component';
 import { AppRoute } from 'Enums/app-route';
 import { IRouter } from 'Interfaces/router';
 import { sessionStorageService } from 'Services/storage-service';
-import { requestActiveAndInactiveUsers } from 'Utils/request';
+import { requestActiveAndInactiveUsers } from 'Utils/requests';
 
 export class AboutPage extends BaseComponent {
   constructor(router: IRouter) {

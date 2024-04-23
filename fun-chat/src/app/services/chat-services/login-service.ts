@@ -1,6 +1,6 @@
 import { ErrorResponse, UserLoginResponse, UserLogoutResponse } from 'Interfaces/ws-response';
 import { TypeName } from 'Enums/type.name';
-import { requestActiveAndInactiveUsers } from 'Utils/request';
+import { requestActiveAndInactiveUsers } from 'Utils/requests';
 import { socketService } from '../socket-service';
 import { Observable } from '../observable';
 
