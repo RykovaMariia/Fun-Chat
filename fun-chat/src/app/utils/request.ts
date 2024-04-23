@@ -1,9 +1,9 @@
 import { TypeName } from 'Enums/type.name';
 import { socketService } from 'Services/socket-service';
 
-export function requestMessageHistory(login: string) {
+export function requestMessageHistory(login: string, id?: string) {
   socketService.sendMessage({
-    id: '',
+    id: id || '',
     type: TypeName.msgFromUser,
     payload: {
       user: {

@@ -42,22 +42,26 @@ export class MessageService {
   };
 
   private onMsgFromUser = (response: MessageHistoryResponse) => {
-    this.messageHistory.notify(() => response.payload.messages);
+    if (!response.id) {
+      this.messageHistory.notify(() => response.payload.messages);
+    }
 
-    this.unreadMessagesNumber.notify((prev) => {
-      response.payload.messages.forEach((msg) => {
-        if (msg.from !== loginService.getLogin() && !msg.status.isReaded) {
-          if (msg.from in prev) {
-            // eslint-disable-next-line no-param-reassign
-            prev[msg.from] += 1;
-          } else {
-            // eslint-disable-next-line no-param-reassign
-            prev[msg.from] = 1;
+    if (response.id && response.id !== loginService.getLogin()) {
+      this.unreadMessagesNumber.notify((prev) => {
+        const newObj = { ...prev };
+        if (response.id && response.id in prev) return prev;
+        response.payload.messages.forEach((msg) => {
+          if (msg.from !== loginService.getLogin() && !msg.status.isReaded) {
+            if (msg.from in prev) {
+              newObj[msg.from] += 1;
+            } else {
+              newObj[msg.from] = 1;
+            }
           }
-        }
+        });
+        return newObj;
       });
-      return prev;
-    });
+    }
   };
 
   readMessages() {

@@ -17,10 +17,7 @@ export class MessageField extends BaseComponent {
   });
 
   constructor(user?: string) {
-    super({
-      tagName: 'div',
-      classNames: 'chat__messages',
-    });
+    super({ tagName: 'div', classNames: 'chat__messages' });
 
     if (!user) {
       this.setTextContent('Select the user to send the message to...');

@@ -27,7 +27,7 @@ export class User extends BaseComponent {
     this.userName = userName;
     this.unreadMsgCount = new BaseComponent({ tagName: 'span', classNames: 'unread-msg-count' });
 
-    requestMessageHistory(userName);
+    requestMessageHistory(userName, userName);
 
     messageService.subscribeUnreadMessagesNumber(this.setUnreadMessagesNumber);
   }
@@ -43,6 +43,10 @@ export class User extends BaseComponent {
 
   destroyAndUnsubscribe() {
     this.destroy();
+    this.unsubscribeUnreadMessagesNumber();
+  }
+
+  unsubscribeUnreadMessagesNumber() {
     messageService.unsubscribeUnreadMessagesNumber(this.setUnreadMessagesNumber);
   }
 }
