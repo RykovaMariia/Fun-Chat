@@ -132,6 +132,18 @@ export class MessageService {
     });
   };
 
+  changeSendStatus(user: string) {
+    if (this.openChatUser.getValue() === user) {
+      this.messageHistory.notify((prev) =>
+        prev.map((msg) => {
+          // eslint-disable-next-line no-param-reassign
+          msg.status.isDelivered = true;
+          return msg;
+        }),
+      );
+    }
+  }
+
   subscribeMessageHistory(callback: (messages: MessageResponse[]) => void) {
     this.messageHistory.subscribe(callback);
   }

@@ -8,6 +8,7 @@ import {
 import { Observable } from 'Services/observable';
 import { socketService } from 'Services/socket-service';
 import { loginService } from './login-service';
+import { messageService } from './message-service';
 
 class UserListService {
   private activeUsers = new Observable<string[]>([]);
@@ -38,6 +39,8 @@ class UserListService {
         return prev;
       });
     }
+
+    messageService.changeSendStatus(login);
 
     if (this.inactiveUsers.getValue().includes(login)) {
       this.inactiveUsers.notify((prev) => {
