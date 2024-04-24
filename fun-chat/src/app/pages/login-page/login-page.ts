@@ -41,7 +41,7 @@ export class LoginPage extends BaseComponent {
     this.appendChildren([header, loginForm, footer]);
 
     loginService.subscribeLoginError((errorText) => {
-      this.appendChild(new Modal(errorText));
+      this.appendChild(new Modal({ textContent: errorText, buttonText: 'ok' }));
     });
   }
 

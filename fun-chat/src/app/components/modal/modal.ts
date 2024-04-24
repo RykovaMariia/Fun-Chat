@@ -2,8 +2,14 @@ import './modal.scss';
 import { BaseComponent } from 'Components/base-component';
 import { Button } from 'Components/button/button';
 
+interface ModalProps {
+  textContent: string;
+  description?: BaseComponent;
+  buttonText?: string;
+}
+
 export class Modal extends BaseComponent {
-  constructor(textContent: string) {
+  constructor({ textContent, description, buttonText }: ModalProps) {
     super({
       tagName: 'div',
       classNames: 'modal',
@@ -15,15 +21,21 @@ export class Modal extends BaseComponent {
       textContent,
     });
 
-    const okButton = new Button(
-      {
-        classNames: 'modal__button',
-        textContent: 'ok',
-      },
-      { onclick: () => this.destroy() },
-    );
+    if (description) {
+      modalWindow.appendChild(description);
+    }
 
-    modalWindow.appendChild(okButton);
+    if (buttonText) {
+      const okButton = new Button(
+        {
+          classNames: 'modal__button',
+          textContent: buttonText,
+        },
+        { onclick: () => this.destroy() },
+      );
+
+      modalWindow.appendChild(okButton);
+    }
 
     this.appendChild(modalWindow);
   }
