@@ -11,6 +11,10 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+
+  @include mixins.media-mobile {
+    padding: 30px 10px 10px;
+  }
 }
 
 .header__user {

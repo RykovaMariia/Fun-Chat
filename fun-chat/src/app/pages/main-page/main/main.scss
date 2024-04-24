@@ -1,4 +1,5 @@
 @use '../../../../styles/constants.scss';
+@use '../../../../styles/mixins.scss';
 
 .main {
   height: 500px;
@@ -8,4 +9,8 @@
   display: flex;
   background-color: constants.$color-opacity10;
   box-sizing: border-box;
+
+  @include mixins.media-mobile {
+    padding: 10px;
+  }
 }

@@ -19,6 +19,10 @@
   .about-chat {
     position: absolute;
     bottom: 20px;
+
+    @include mixins.media-mobile {
+      font-size: 0.8rem;
+    }
   }
 
   @include mixins.media-tablet {
@@ -27,6 +31,16 @@
 
   @include mixins.media-middle {
     width: 45%;
+  }
+
+  @include mixins.media-mobile {
+    width: 30%;
+  }
+
+  input.input__field {
+    @include mixins.media-mobile {
+      font-size: 1rem;
+    }
   }
 }
 
@@ -56,6 +70,10 @@ li {
     display: inline-block;
     margin-right: 10px;
     background-color: constants.$color-border;
+
+    @include mixins.media-mobile {
+      margin-right: 5px;
+    }
   }
 
   &::after {
@@ -70,6 +88,11 @@ li {
   &:hover {
     background-color: constants.$color-card;
   }
+
+  @include mixins.media-mobile {
+    padding: 10px 5px 0;
+    font-size: 1rem;
+  }
 }
 
 .unread-msg-count {
@@ -83,6 +106,13 @@ li {
   border: solid 1px constants.$color-border;
   position: absolute;
   right: 30px;
+
+  @include mixins.media-mobile {
+    width: 10px;
+    height: 10px;
+    font-size: 0.6rem;
+    right: 10px;
+  }
 }
 
 .activeUser {
