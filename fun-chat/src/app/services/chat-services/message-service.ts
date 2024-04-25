@@ -38,33 +38,42 @@ export class MessageService {
   }
 
   private onMsgSend = (response: SendingMessageResponse) => {
-    const recipient = response.payload.message.from;
+    const { message } = response.payload;
+    const recipient = message.from;
 
     requestMessageHistory(this.openChatUser.getValue());
 
-    this.unreadMessages.notify((prev) => {
-      const newObj = { ...prev };
-      if (recipient in prev) newObj[recipient].push(response.payload.message);
-      else newObj[recipient] = [response.payload.message];
-      return newObj;
+    this.unreadMessages.notify((prevUnreadMessages) => {
+      const updatedMessages = prevUnreadMessages[recipient]
+        ? [...prevUnreadMessages[recipient], message]
+        : [message];
+
+      return {
+        ...prevUnreadMessages,
+        [recipient]: updatedMessages,
+      };
     });
   };
 
   private onMsgFromUser = (response: MessageHistoryResponse) => {
-    if (!response.id) {
+    const { id } = response;
+    if (!id) {
       this.messageHistory.notify(() => response.payload.messages);
     }
 
-    if (response.id && response.id !== loginService.getLogin()) {
-      this.unreadMessages.notify((prev) => {
-        const newObj = { ...prev };
-        if (response.id && response.id in prev) return prev;
+    if (id && id !== loginService.getLogin()) {
+      this.unreadMessages.notify((prevUnreadMessages) => {
+        const newObj = { ...prevUnreadMessages };
+        if (id in prevUnreadMessages) return prevUnreadMessages;
+
         response.payload.messages.forEach((msg) => {
-          if (msg.from !== loginService.getLogin() && !msg.status.isReaded) {
-            if (msg.from in prev) {
-              newObj[msg.from].push(msg);
+          const msgFrom = msg.from;
+
+          if (msgFrom !== loginService.getLogin() && !msg.status.isReaded) {
+            if (msgFrom in prevUnreadMessages) {
+              newObj[msgFrom].push(msg);
             } else {
-              newObj[msg.from] = [msg];
+              newObj[msgFrom] = [msg];
             }
           }
         });
@@ -83,11 +92,14 @@ export class MessageService {
 
   private onMsgRead = (response: MessageReadStatusResponse) => {
     requestMessageHistory(this.openChatUser.getValue());
+
     this.messageHistory.getValue().forEach((message) => {
       if (message.id === response.payload.message.id) {
-        this.unreadMessages.notify((prev) => {
-          const newObj = { ...prev };
-          if (message.from in prev) delete newObj[message.from];
+        this.unreadMessages.notify((prevUnreadMessages) => {
+          const newObj = { ...prevUnreadMessages };
+
+          if (message.from in prevUnreadMessages) delete newObj[message.from];
+
           return newObj;
         });
       }
@@ -119,27 +131,32 @@ export class MessageService {
 
   private onMsgEdit = (response: MessageTextEditingResponse) => {
     this.messageHistory.notify((prev) => {
-      prev.forEach((msg, i) => {
+      return prev.map((msg) => {
         if (msg.id === response.payload.message.id) {
-          // eslint-disable-next-line no-param-reassign
-          prev[i].text = response.payload.message.text;
-          // eslint-disable-next-line no-param-reassign
-          prev[i].status.isEdited = true;
+          return {
+            ...msg,
+            text: response.payload.message.text,
+            status: {
+              ...msg.status,
+              isEdited: true,
+            },
+          };
         }
+        return msg;
       });
-
-      return prev;
     });
   };
 
   changeSendStatus(user: string) {
     if (this.openChatUser.getValue() === user) {
       this.messageHistory.notify((prev) =>
-        prev.map((msg) => {
-          // eslint-disable-next-line no-param-reassign
-          msg.status.isDelivered = true;
-          return msg;
-        }),
+        prev.map((msg) => ({
+          ...msg,
+          status: {
+            ...msg.status,
+            isDelivered: true,
+          },
+        })),
       );
     }
   }
@@ -150,10 +167,6 @@ export class MessageService {
 
   unsubscribeMessageHistory(callback: (messages: MessageResponse[]) => void) {
     this.messageHistory.unsubscribe(callback);
-  }
-
-  subscribeOpenChatUser(callback: (user: string) => void) {
-    this.openChatUser.subscribe(callback);
   }
 
   notifyOpenChatUser(user: string) {

@@ -42,14 +42,14 @@ export class MessageField extends BaseComponent {
   createMessages = (messages: MessageResponse[]) => {
     const messagesWrapper = new BaseComponent({ tagName: 'div', classNames: 'messages' });
 
-    [...this.readMessageElements, ...this.unreadMessageElements].forEach((el) => el.destroy());
-    this.line.destroy();
+    this.clearMessageElements();
 
     if (messages.length === 0) {
       this.setTextContent('Write your first message...');
       return;
     }
     this.setTextContent('');
+
     this.readMessageElements = messages
       .filter((msg) => msg.status.isReaded || msg.to === messageService.getOpenChatUser())
       .map((msg) => new Message(msg));
@@ -67,17 +67,19 @@ export class MessageField extends BaseComponent {
         ...this.unreadMessageElements,
       ]);
       this.appendChild(messagesWrapper);
-      if (this.readMessageElements.length) {
-        this.readMessageElements[this.readMessageElements.length - 1].scrollIntoView();
-      }
     } else {
       this.getElement().removeEventListener('wheel', this.readMessageWhenScrolling);
       messagesWrapper.appendChildren(this.readMessageElements);
       this.appendChild(messagesWrapper);
-
-      this.readMessageElements[this.readMessageElements.length - 1].scrollIntoView();
     }
+
+    this.readMessageElements[this.readMessageElements.length - 1].scrollIntoView();
   };
+
+  clearMessageElements() {
+    [...this.readMessageElements, ...this.unreadMessageElements].forEach((el) => el.destroy());
+    this.line.destroy();
+  }
 
   unsubscribeHistoryMessage() {
     messageService.unsubscribeMessageHistory(this.createMessages);
