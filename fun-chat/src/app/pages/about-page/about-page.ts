@@ -5,6 +5,9 @@ import { AppRoute } from 'Enums/app-route';
 import { IRouter } from 'Interfaces/router';
 import { sessionStorageService } from 'Services/storage-service';
 import { requestActiveAndInactiveUsers } from 'Utils/requests';
+import { Link } from 'Components/link/link';
+
+export const GITHUB_LINK = 'https://github.com/RykovaMariia';
 
 export class AboutPage extends BaseComponent {
   constructor(router: IRouter) {
@@ -28,6 +31,11 @@ export class AboutPage extends BaseComponent {
         'The application is designed to demonstrate the Fun Chat task as part of the RSSchool JS/FE 2024',
     });
 
+    const nameGitHub = new Link(
+      { tagName: 'a', textContent: 'RykovaMariia', classNames: 'gitHub' },
+      { reference: GITHUB_LINK },
+    );
+
     const button = new Button(
       { classNames: 'button_about', textContent: 'Go back' },
       {
@@ -39,7 +47,7 @@ export class AboutPage extends BaseComponent {
         },
       },
     );
-    about.appendChildren([heading, textContent, button]);
+    about.appendChildren([heading, textContent, nameGitHub, button]);
     this.appendChild(about);
   }
 }

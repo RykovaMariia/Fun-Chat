@@ -6,10 +6,20 @@ import { IRouter } from 'Interfaces/router';
 export class Link extends BaseComponent {
   constructor(
     props: BaseComponentProps,
-    { toNavigation, router }: { toNavigation: AppRoute; router: IRouter },
+    {
+      toNavigation,
+      router,
+      reference,
+    }: { toNavigation?: AppRoute; router?: IRouter; reference?: string },
   ) {
     super(props);
-    this.navigate(toNavigation, router);
+    if (toNavigation && router) {
+      this.navigate(toNavigation, router);
+    }
+    if (reference) {
+      this.setAttribute({ name: 'href', value: reference });
+    }
+
     this.setClassName('link');
   }
 

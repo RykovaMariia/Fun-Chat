@@ -64,17 +64,15 @@ export class Message extends BaseComponent {
     });
 
     const statuses = new BaseComponent({ tagName: 'div', classNames: 'statuses' });
-
+    const status = new BaseComponent({ tagName: 'div', classNames: 'status' });
+    const edited = new BaseComponent({ tagName: 'div', classNames: 'edited' });
     if (message.from !== messageService.getOpenChatUser()) {
-      const edited = new BaseComponent({ tagName: 'div', classNames: 'edited' });
-
-      const status = new BaseComponent({ tagName: 'div', classNames: 'status' });
-
-      edited.setTextContent(message.status.isEdited ? 'edited' : '');
       status.setTextContent(getMessageStatus(message));
-
-      statuses.appendChildren([edited, status]);
     }
+
+    edited.setTextContent(message.status.isEdited ? 'edited' : '');
+
+    statuses.appendChildren([edited, status]);
     messageWrapper.appendChildren([messageInfo, messageText, statuses]);
 
     this.appendChild(messageWrapper);
