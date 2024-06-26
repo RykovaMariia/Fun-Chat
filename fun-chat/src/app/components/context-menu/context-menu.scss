@@ -1,0 +1,33 @@
+@use '../../../styles/constants.scss';
+@use '../../../styles/mixins.scss';
+
+.context-menu {
+  position: relative;
+  top: 100%;
+  right: 0;
+  padding: 10px;
+  border-radius: 10px;
+  width: 100px;
+  z-index: 10;
+  background-color: constants.$color-opacity40;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  @include mixins.media-mobile {
+    padding: 5px;
+    width: 35px;
+    height: 35px;
+    font-size: 0.7rem;
+    gap: 5px;
+  }
+}
+
+.context-menu__button {
+  cursor: pointer;
+  width: 100%;
+  padding: 0;
+  text-align: center;
+}

@@ -1,0 +1,9 @@
+@use '../../../styles/constants.scss';
+
+.link {
+  cursor: pointer;
+
+  &:hover {
+    color: constants.$color-button;
+  }
+}

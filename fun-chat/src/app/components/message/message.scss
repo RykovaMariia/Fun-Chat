@@ -1,0 +1,81 @@
+@use '../../../styles/constants.scss';
+@use '../../../styles/mixins.scss';
+
+.message {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  position: relative;
+
+  &_right {
+    justify-content: end;
+  }
+
+  @include mixins.media-mobile {
+    font-size: 1rem;
+  }
+}
+
+.message__wrapper {
+  max-width: 300px;
+  width: 80%;
+  padding: 10px;
+  background: constants.$color-opacity40;
+  position: relative;
+  left: 10px;
+  border-radius: 10px 10px 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &::before {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    right: 100%;
+    top: calc(100% - 10px);
+    border-top: 10px solid transparent;
+    border-right: 5px solid constants.$color-opacity40;
+  }
+
+  &_right {
+    border-radius: 10px 10px 0;
+  }
+
+  &_right::before {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    right: calc(0% - 5px);
+    top: calc(100% - 10px);
+    border-top: 10px solid transparent;
+    border-right: none;
+    border-left: 5px solid constants.$color-opacity40;
+  }
+
+  @include mixins.media-mobile {
+    gap: 5px;
+  }
+}
+
+.message__info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+
+  @include mixins.media-mobile {
+    font-size: 0.8rem;
+  }
+}
+
+.statuses {
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+
+  @include mixins.media-mobile {
+    font-size: 0.8rem;
+  }
+}

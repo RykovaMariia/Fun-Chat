@@ -1,0 +1,21 @@
+@use '../../../styles/constants.scss';
+
+.footer {
+  width: 100%;
+  padding: 20px 20px 20px 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.3rem;
+}
+
+.logo-rsschool {
+  svg {
+    width: 50px;
+    height: 30px;
+  }
+}
+
+.gitHub {
+  text-decoration: none;
+  color: inherit;
+}

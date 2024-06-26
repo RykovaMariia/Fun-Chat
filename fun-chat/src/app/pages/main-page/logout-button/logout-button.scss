@@ -1,0 +1,35 @@
+@use '../../../../styles/constants.scss';
+@use '../../../../styles/mixins.scss';
+
+.header .button_logout {
+  width: max-content;
+  box-shadow: none;
+  background-color: constants.$color-opacity40;
+  padding: 5px 10px;
+  border-radius: 10px;
+
+  @include mixins.media-mobile {
+    padding: 5px 8px;
+  }
+
+  &:hover {
+    box-shadow: none;
+
+    & svg {
+      stroke: constants.$color-button;
+    }
+  }
+}
+
+.logout-svg {
+  svg {
+    width: 25px;
+    height: 25px;
+    stroke: constants.$color-text-dark;
+
+    @include mixins.media-mobile {
+      width: 15px;
+      height: 15px;
+    }
+  }
+}

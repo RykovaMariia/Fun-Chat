@@ -1,0 +1,36 @@
+@use '../../../styles/constants.scss';
+@use '../../../styles/mixins.scss';
+
+.button {
+  cursor: pointer;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 2rem;
+  color: constants.$color-text-light;
+  width: 150px;
+  padding: 8px 30px;
+  border-radius: 10px;
+  border: 0;
+  background-color: constants.$color-button;
+  box-shadow: constants.$color-shadow;
+  transition: all 0.7s ease;
+
+  &:hover {
+    box-shadow: constants.$color-shadow-dark;
+  }
+
+  &:active {
+    box-shadow: constants.$color-shadow;
+    transform: scale(95%);
+  }
+
+  &:disabled {
+    box-shadow: constants.$color-shadow;
+    transform: scale(100%);
+    cursor: auto;
+  }
+
+  @include mixins.media-mobile {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,19 @@
+@use './constants.scss';
+
+@mixin media-tablet {
+  @media (max-width: constants.$tablet-width) {
+    @content;
+  }
+}
+
+@mixin media-middle {
+  @media (max-width: constants.$tablet-middle) {
+    @content;
+  }
+}
+
+@mixin media-mobile {
+  @media (max-width: constants.$mobile-width) {
+    @content;
+  }
+}

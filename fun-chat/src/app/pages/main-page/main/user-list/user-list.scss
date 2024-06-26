@@ -1,0 +1,127 @@
+@use '../../../../../styles/constants.scss';
+@use '../../../../../styles/mixins.scss';
+
+.user-list {
+  position: relative;
+  width: 20%;
+  background-color: constants.$color-opacity40;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+
+  .input__field {
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    font-size: 1.5rem;
+  }
+
+  .about-chat {
+    position: absolute;
+    bottom: 20px;
+
+    @include mixins.media-mobile {
+      font-size: 0.8rem;
+    }
+  }
+
+  @include mixins.media-tablet {
+    width: 30%;
+  }
+
+  @include mixins.media-middle {
+    width: 45%;
+  }
+
+  @include mixins.media-mobile {
+    width: 30%;
+  }
+
+  input.input__field {
+    @include mixins.media-mobile {
+      font-size: 1rem;
+    }
+  }
+}
+
+.userList {
+  height: 80%;
+  width: 100%;
+  overflow: hidden auto;
+  scrollbar-color: constants.$color-opacity40 constants.$color-opacity10;
+  scrollbar-width: thin;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  padding: 10px 20px 0;
+
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 100%;
+    display: inline-block;
+    margin-right: 10px;
+    background-color: constants.$color-border;
+
+    @include mixins.media-mobile {
+      margin-right: 5px;
+    }
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    margin: 10px auto 0;
+    height: 1px;
+    background-color: constants.$color-border;
+  }
+
+  &:hover {
+    background-color: constants.$color-card;
+  }
+
+  @include mixins.media-mobile {
+    padding: 10px 5px 0;
+    font-size: 1rem;
+  }
+}
+
+.unread-msg-count {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  width: 15px;
+  height: 15px;
+  font-size: 0.9rem;
+  border-radius: 100%;
+  border: solid 1px constants.$color-border;
+  position: absolute;
+  right: 30px;
+
+  @include mixins.media-mobile {
+    width: 10px;
+    height: 10px;
+    font-size: 0.6rem;
+    right: 10px;
+  }
+}
+
+.activeUser {
+  &::before {
+    background-color: constants.$color-active;
+  }
+}
+
+.unread-messages {
+  margin-left: 30px;
+  font-size: 1.2rem;
+}
