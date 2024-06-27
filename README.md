@@ -23,3 +23,9 @@
 - Follow the deploy link [Fun-Chat](https://rykovamariia-fun-chat.netlify.app/)
 
 ## Demo
+![image](https://github.com/RykovaMariia/Fun-Chat/assets/129385242/7511ef0e-7c4c-48a1-8fcb-055010854540)
+![image](https://github.com/RykovaMariia/Fun-Chat/assets/129385242/df9fb278-7712-4a77-a8cf-b4d895649bb2)
+![image](https://github.com/RykovaMariia/Fun-Chat/assets/129385242/47bb173f-4317-4a68-899b-a6ca32a660de)
+
+
+
